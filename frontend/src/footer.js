@@ -9,7 +9,7 @@ document.querySelector("#footer").innerHTML = `
         </div>
         <div class="col12 footerTop">
             <div class="logo">
-                <img src="/logoWhite.PNG" width="3840" height="2160" />
+                <img src="/logoWhite.png" width="3840" height="2160" />
             </div>
             <div class="footerFrase">
                 <h1 class="title">U</h1>
