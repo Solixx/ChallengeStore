@@ -6,7 +6,7 @@ document.querySelector('#navBar').innerHTML = `
     <div class="navbar">
         <div class="container">
             <div class="col1 logo">
-                <img src="./../public/logoWhite.png" width="3840" height="2160" />
+                <img src="./../public/logoWhite.PNG" width="3840" height="2160" />
             </div>
             <div class="col11 menuOptions">
                 <div class="menuOpt">

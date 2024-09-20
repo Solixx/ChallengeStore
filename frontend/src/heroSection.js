@@ -12,10 +12,10 @@ document.querySelector('#heroSection').innerHTML = `
             <h1 class="bigTitle">K</h1>
         </div>
         <div class="imgDest">
-            <img src="./../public/iphone14.png" width="3840" height="2160" />
+            <img src="./../public/iphone14.PNG" width="3840" height="2160" />
         </div>
         <div class="waves">
-            <img src="./../public/waves.png" width="3840" height="2160" />
+            <img src="./../public/waves.PNG" width="3840" height="2160" />
         </div>
     </div>
 `
