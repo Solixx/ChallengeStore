@@ -6,7 +6,7 @@ document.querySelector('#itemsSection').innerHTML = `
     <div class="itemsSection">
         <div class="container">
             <div class="col6 itemsBox">
-                <img src="./../public/person-iPhone.JPG" width="100%" heigth="100%" />
+                <img src="/person-iPhone.JPG" width="100%" heigth="100%" />
                 <div class="itemsBoxContent">
                     <h2>iPhone</h2>
                     <p class="whiteP">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when.</p>
@@ -16,7 +16,7 @@ document.querySelector('#itemsSection').innerHTML = `
                 </div>
             </div>
             <div class="col6 itemsBox">
-                <img src="./../public/samsung.JPG" width="100%" heigth="100%" />
+                <img src="/samsung.JPG" width="100%" heigth="100%" />
                 <div class="itemsBoxContent">
                     <h2>Samsung</h2>
                     <p class="whiteP">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when.</p>
@@ -26,7 +26,7 @@ document.querySelector('#itemsSection').innerHTML = `
                 </div>
             </div>
             <div class="col6 itemsBox">
-                <img src="./../public/huawei.JPG" width="100%" heigth="100%" />
+                <img src="/huawei.JPG" width="100%" heigth="100%" />
                 <div class="itemsBoxContent">
                     <h2>Huawei</h2>
                     <p class="whiteP">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when.</p>
@@ -36,7 +36,7 @@ document.querySelector('#itemsSection').innerHTML = `
                 </div>
             </div>
             <div class="col6 itemsBox">
-                <img src="./../public/oppo.JPG" width="100%" heigth="100%" />
+                <img src="/oppo.JPG" width="100%" heigth="100%" />
                 <div class="itemsBoxContent">
                     <h2>Oppo</h2>
                     <p class="whiteP">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when.</p>
