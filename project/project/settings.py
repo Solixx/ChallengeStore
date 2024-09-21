@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',  # Use PostgreSQL
+        'NAME': 'ChallengeStore',  # The name of your PostgreSQL database
+        'USER': 'postgres',  # Your PostgreSQL username
+        'PASSWORD': '123',  # Your PostgreSQL password
+        'HOST': 'localhost',  # Set to the appropriate host, or use an IP address
+        'PORT': '5432',  # The default PostgreSQL port
     }
 }
 
@@ -126,6 +130,11 @@ STATICFILES_DIRS = [
 
 # Where to collect static files during production with `collectstatic`
 STATIC_ROOT = BASE_DIR / "staticfiles"  # For production, if you run collectstatic
+
+
+# Media files settings
+MEDIA_URL = '/media/'  # The URL Django will serve media files at
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # The directory where files will be stored
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

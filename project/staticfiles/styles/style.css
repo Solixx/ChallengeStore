@@ -36,10 +36,11 @@
 
 .navbar .menuOptions hr{
     width: 50%;
-    height: 1px;
+    height: 2px;
     margin: 0 auto;
     background-color: #F7F7F7 !important;
     display: none;
+    border: none;
 }
 
 .navbar .menuOptions .navOptActive hr{
@@ -280,3 +281,24 @@ footer .footerLine hr{
     margin-top: 5px;
     fill: #fff !important;
 }
+
+
+/* AdminPanel */
+
+.adminPanel{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-height: 100svh;
+    padding: 120px 0;
+}
+
+ul{
+    color: inherit;
+    list-style: none;
+  }
+  
+  li{
+    color: var(--color-secondaryText);
+  }
