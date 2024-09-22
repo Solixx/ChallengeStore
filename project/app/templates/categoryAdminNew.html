@@ -1,0 +1,22 @@
+{% extends "base.html" %} 
+{% block title %} New Product | Challenge Store {% endblock %} 
+{% block content %}
+<div class="adminPanel">
+  <div class="container">
+    <h1 class="col12">Product</h1>
+    <form  action="{% url 'adminCategoryCreate' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="col12">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" value="" required>
+      </div>
+      <div class="col12">
+        <button>
+          Create
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %} 
+{% block title %} Admin Panel | Challenge Store {% endblock %} 
+{% block content %}
+<div class="adminPanel">
+  <div class="container">
+    <h1 class="col12">Category</h1>
+    <form  action="{% url 'adminCategoryEdit' category.id %}" method="post">
+      {% csrf_token %}
+      <div class="col12">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" value="{{ category.name }}">
+      </div>
+      <div class="col12">
+        <button>
+          Edit
+        </button>
+      </div>
+    </form>
+    <ul class="col12">
+        <li>{{ category.name }}</li>
+    </ul>
+    <div class="col5">
+      <a href="{% url 'adminCategoryRestore' category.id %}">
+        <button>
+          Restore
+        </button>
+      </a>
+    </div>
+    <div class="col2"></div>
+    <div class="col5">
+      <a href="{% url 'adminCategoryDelete' category.id %}">
+        <button>
+          Delete
+        </button>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %} 
+{% block title %} Admin Panel | Challenge Store {% endblock %} 
+{% block content %}
+<div class="adminPanel">
+  <div class="container">
+    <h1 class="col12">Categories</h1>
+    <ul class="col12">
+      {% for category in categories %}
+      <a href="{% url 'categoriesAdminProfile' category.id %}">
+        <li>{{ category.name }}</li>
+      </a>
+      {% endfor %}
+    </ul>
+    <a href="{% url 'categoriesAdminNewCategoryPage' %}">
+      <button class="col12">
+        Criar Nova Categoria
+      </button>
+    </a>
+  </div>
+</div>
+{% endblock %}
