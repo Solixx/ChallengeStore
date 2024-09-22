@@ -4,11 +4,37 @@
 <div class="adminPanel">
   <div class="container">
     <h1 class="col12">Product</h1>
+    <form  action="{% url 'productAdminEdit' product.id %}" method="post">
+      {% csrf_token %}
+      <div class="col12">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" value="{{ product.name }}">
+      </div>
+      <div class="col12">
+        <label for="price">Price</label>
+        <input type="number" id="price" name="price" value="{{ product.price }}">
+      </div>
+      <div class="col12">
+        <label for="stock">Stock</label>
+        <input type="number" id="stock" name="stock" value="{{ product.stock }}">
+      </div>
+      <div class="col12">
+        <button>
+          Edit
+        </button>
+      </div>
+    </form>
     <ul class="col12">
         <li>{{ product.name }} - ${{ product.price }}</li>
         <li>{{ product.stock }}</li>
         <li><img src="{{ product.image.url }}" alt="{{ product.name }}" /></li>
     </ul>
+    <div class="col2"></div>
+    <div class="col5">
+      <button>
+        <a href="{% url 'productAdminDelete' product.id %}">Delete</a>
+      </button>
+    </div>
   </div>
 </div>
 {% endblock %}
