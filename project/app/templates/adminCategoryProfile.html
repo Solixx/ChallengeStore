@@ -1,4 +1,4 @@
-{% extends "base.html" %} 
+{% extends "adminBase.html" %} 
 {% block title %} Admin Panel | Challenge Store {% endblock %} 
 {% block content %}
 <div class="adminPanel">
@@ -33,6 +33,27 @@
           Delete
         </button>
       </a>
+    </div>
+    <div class="col12">
+      <ul class="col12">
+        {% for product in products %}
+        <a href="{% url 'adminProductProfile' product.id %}">
+          <li>{{ product.name }} - ${{ product.price }}</li>
+          <li>{{ product.stock }}</li>
+          <li><img src="{{ product.image.url }}" alt="{{ product.name }}" /></li>
+        </a>
+        <a href="{% url 'adminProductRestore' product.id %}">
+          <button>
+            Restore
+          </button>
+        </a>
+        <a href="{% url 'adminProductDelete' product.id %}">
+          <button>
+            Delete
+          </button>
+        </a>
+        {% endfor %}
+      </ul>
     </div>
   </div>
 </div>

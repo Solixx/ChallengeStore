@@ -1,4 +1,4 @@
-{% extends "base.html" %} 
+{% extends "adminBase.html" %} 
 {% block title %} Admin Panel | Challenge Store {% endblock %} 
 {% block content %}
 <div class="adminPanel">
@@ -6,12 +6,12 @@
     <h1 class="col12">Categories</h1>
     <ul class="col12">
       {% for category in categories %}
-      <a href="{% url 'categoriesAdminProfile' category.id %}">
+      <a href="{% url 'adminCategoryProfile' category.id %}">
         <li>{{ category.name }}</li>
       </a>
       {% endfor %}
     </ul>
-    <a href="{% url 'categoriesAdminNewCategoryPage' %}">
+    <a href="{% url 'adminPageCategoriesNew' %}">
       <button class="col12">
         Criar Nova Categoria
       </button>

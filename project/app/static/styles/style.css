@@ -30,11 +30,6 @@ ul{
     height: 90px;
 }
 
-.navbar .logo img{
-    width: 100%;
-    height: 100%;
-}
-
 .navbar .menuOptions{
     display: flex;
     flex-direction: row-reverse;
@@ -91,10 +86,7 @@ ul{
 }
 
 .heroSection .imgDest img{
-    width: 100%;
-    height: 100%;
     z-index: 2;
-    object-fit: cover;
 }
 
 .heroSection .waves{
@@ -107,9 +99,7 @@ ul{
 }
 
 .heroSection .waves img{
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
+    object-fit: fill !important;
 }
 
 
@@ -138,9 +128,6 @@ ul{
 
 .itemsBox img{
     position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
     z-index: 0;
 }
 
@@ -190,11 +177,6 @@ footer .footerLine hr{
 .footerTop .logo{
     width: 120px;
     height: 120px;
-}
-
-.footerTop .logo img{
-    width: 100%;
-    height: 100%;
 }
 
 .footerTop .footerFrase{

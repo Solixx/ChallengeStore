@@ -1,0 +1,24 @@
+{% extends "adminBase.html" %} 
+{% block title %} Admin Panel | Challenge Store {% endblock %} 
+{% block content %}
+<div class="adminPanel">
+  <div class="container">
+    <h1 class="col12">Products</h1>
+    <p class="col12">Here are the products we have available:</p>
+    <ul class="col12">
+      {% for product in products %}
+      <a href="{% url 'adminProductProfile' product.id %}">
+        <li>{{ product.name }} - ${{ product.price }}</li>
+        <li>{{ product.stock }}</li>
+        <li><img src="{{ product.image.url }}" alt="{{ product.name }}" /></li>
+      </a>
+      {% endfor %}
+    </ul>
+    <a href="{% url 'adminPageProductNew' %}">
+      <button class="col12">
+        Criar Novo Produto 
+      </button>
+    </a>
+  </div>
+</div>
+{% endblock %}

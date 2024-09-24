@@ -11,13 +11,19 @@ def products(request):
     return render(request, "products.html", { "products": products })
 
 def adminPanel(request):
-    products = Products.objects.all()
-    return render(request, "adminPanel.html", { "products": products })
+    return render(request, "adminPanel.html")
+
+
+""" PRODUCTS """
+
+def adminListProducts(request):
+    products = Products.objects.all().order_by('-created_at')
+    return render(request, "adminProducts.html", { "products": products })
 
 def adminProductProfile(request, id):
     product = get_object_or_404(Products, id=id)
     categories = Categories.objects.all()
-    return render(request, "productAdminProfile.html", { "product": product, "categories": categories })
+    return render(request, "adminProductProfile.html", { "product": product, "categories": categories })
 
 def adminProductEdit(request, id):
     product = get_object_or_404(Products, id=id)
@@ -40,26 +46,30 @@ def adminProductEdit(request, id):
 
         product.save()
 
-        return render(request, "productAdminProfile.html", { "product": product, "categories": categories })
+        return render(request, "adminProductProfile.html", { "product": product, "categories": categories })
     
     products = Products.objects.all()
-    return render(request, "adminPanel.html", {"products": products})
+    return render(request, "adminProducts.html", {"products": products})
 
 def adminProductDelete(request, id):
     get_object_or_404(Products, id=id)
 
-    Products.objects.get(id=id).delete()
-    return redirect('adminPanel')
+    product = Products.objects.get(id=id)
+    product.delete()
+    categories = Categories.objects.all()
+    return render(request, "adminProductProfile.html", { "product": product, "categories": categories })
 
 def adminProductRestore(request, id):
     get_object_or_404(Products, id=id)
 
-    Products.deleted_objects.get(id=id).restore()
-    return redirect('adminPanel')
-
-def productAdminNewProductPage(request):
+    product = Products.deleted_objects.get(id=id)
+    product.restore()
     categories = Categories.objects.all()
-    return render(request, "productAdminNew.html", { "categories": categories })
+    return render(request, "adminProductProfile.html", { "product": product, "categories": categories })
+
+def adminPageProductNew(request):
+    categories = Categories.objects.all()
+    return render(request, "adminProductNew.html", { "categories": categories })
 
 def adminProductCreate(request):
     categories = Categories.objects.all()
@@ -80,17 +90,20 @@ def adminProductCreate(request):
 
         product.save()
 
-        return render(request, "productAdminProfile.html", { "product": product, "categories": categories })
+        return render(request, "adminProductProfile.html", { "product": product, "categories": categories })
     
     products = Products.objects.all()
-    return render(request, "adminPanel.html", {"products": products})
+    return render(request, "adminProducts.html", {"products": products})
 
-def adminPanelCategories(request):
-    categories = Categories.objects.all()
-    return render(request, "adminPanelCategories.html", { "categories": categories })
 
-def categoriesAdminNewCategoryPage(request):
-    return render(request, "categoryAdminNew.html")
+""" CATEGORIES """
+
+def adminListCategories(request):
+    categories = Categories.objects.all().order_by('-created_at')
+    return render(request, "adminCategories.html", { "categories": categories })
+
+def adminPageCategoriesNew(request):
+    return render(request, "adminCategoryNew.html")
 
 def adminCategoryCreate(request):
     if request.method == "POST":
@@ -98,14 +111,15 @@ def adminCategoryCreate(request):
         category.name = request.POST["name"]
         category.save()
 
-        return redirect('adminPanelCategories')
+        return render(request, "adminCategoryProfile.html", { "category": category, "products": products })
     
     categories = Categories.objects.all()
-    return render(request, "adminPanelCategories.html", { "categories": categories })
+    return render(request, "adminCategories.html", { "categories": categories })
 
 def adminCategoryProfile(request, id):
     category = get_object_or_404(Categories, id=id)
-    return render(request, "categoryAdminProfile.html", { "category": category })
+    products = Products.objects.filter(category_id = id)
+    return render(request, "adminCategoryProfile.html", { "category": category, "products": products })
 
 def adminCategoryEdit(request, id):
     category = get_object_or_404(Categories, id=id)
@@ -115,19 +129,25 @@ def adminCategoryEdit(request, id):
         category.name = request.POST["name"]
         category.save()
 
-        return render(request, "categoryAdminProfile.html", { "category": category })
+        products = Products.objects.filter(category_id = id)
+
+        return render(request, "adminCategoryProfile.html", { "category": category, "products": products })
     
     categories = Categories.objects.all()
-    return render(request, "adminPanelCategories.html", {"categories": categories})
+    return render(request, "adminCategories.html", {"categories": categories})
 
 def adminCategoryDelete(request, id):
     get_object_or_404(Categories, id=id)
 
-    Categories.objects.get(id=id).delete()
-    return redirect('adminPanelCategories')
+    category = Categories.objects.get(id=id)
+    category.delete()
+    products = Products.objects.filter(category_id = id)
+    return render(request, "adminCategoryProfile.html", { "category": category, "products": products })
 
 def adminCategoryRestore(request, id):
     get_object_or_404(Categories, id=id)
 
-    Categories.deleted_objects.get(id=id).restore()
-    return redirect('adminPanelCategories')
+    category = Categories.deleted_objects.get(id=id)
+    category.restore()
+    products = Products.objects.filter(category_id = id)
+    return render(request, "adminCategoryProfile.html", { "category": category, "products": products })

@@ -19,6 +19,8 @@ class DeletedClassManager(models.Manager):
 
 class Categories(models.Model):
     name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     # Soft delete field
     is_deleted = models.BooleanField(default=False)
@@ -54,6 +56,8 @@ class Products(models.Model):
     price = models.FloatField()
     stock = models.IntegerField()
     image = models.ImageField(upload_to='product_images/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     # Soft delete field
     is_deleted = models.BooleanField(default=False)
