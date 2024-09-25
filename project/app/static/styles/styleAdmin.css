@@ -1,6 +1,8 @@
 :root {
   --sidebar-width: 200px;
   --adminNavbar-heigth: 100px;
+  --adminProductBoxContent-heigth: 165px;
+  --border-radius: 5px;
 }
 
 .adminPanel {
@@ -121,4 +123,143 @@ nav ul li:first-child {
 
 nav ul li:last-child {
   padding-right: 70px;
+}
+
+nav h3{
+  color: #555555 !important;
+  font-weight: bold;
+}
+
+
+/* Dashboard */
+
+.statisticsBox{
+  width: 100%;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: var(--border-radius) !important;
+  background-color: var(--color-secondaryText);
+
+  -webkit-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+}
+
+.statisticsBox h5{
+  color: var(--color-primaryText) !important;
+}
+
+
+/* List - Products */
+
+.adminProductBox{
+  position: relative;
+  width: 100%;
+  height: 640px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+
+  border-radius: var(--border-radius) !important;
+  background-color: var(--color-secondaryText);
+
+  -webkit-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+}
+
+.adminProductBoxDisable img{
+  opacity: 0.75 !important;
+}
+
+.adminProductImg{
+  width: 100%;
+  height: calc(100% - var(--adminProductBoxContent-heigth));
+  margin-bottom: auto;
+}
+
+.adminProductImg img{
+  border-top-left-radius: var(--border-radius) !important;
+  border-top-right-radius: var(--border-radius) !important;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.adminProductContent{
+  position: relative;
+  width: 100%;
+  height: var(--adminProductBoxContent-heigth);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-inline: 25px;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.adminProductContent *{
+  color: #0C0D0E;
+}
+
+.adminProductContentTop{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.adminProductContentCategory{
+  width: 100%;
+  margin-top: 10px;
+}
+
+.adminProductContentCategory select{
+  width: 100%;
+  height: 32px;
+  border: none;
+  border-bottom: 1px solid #CCCCCC;
+  background-color: transparent;
+  color: #0C0D0E;
+}
+
+.adminProductContentButton{
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.adminProductContentButton a{
+  display: block;
+  width: 150px !important;
+  height: 35px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.adminProductContentButton button{
+  font-size: var(--font-size-verySmallP);
+  text-transform: uppercase;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 !important;
+}
+
+.adminProductContentButtonActive button{
+  background-image: linear-gradient(to right, #37ecba 0%, #72afd3 100%) !important;
+}
+
+.adminProductContentButtonDisable button{
+  background-image: linear-gradient(to right, #f78ca0 0%, #f9748f 19%, #fd868c 60%, #fe9a8b 100%) !important;
 }

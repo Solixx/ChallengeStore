@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 :root {
+  --font-size-verySmallP: 12px;            /* 12px */
+  --font-size-smallP: 14px;            /* 14px */
   --font-size-p: 1rem;            /* 16px */
   --font-size-h6: 1rem;         /* 16px */
   --font-size-h5: 1.25rem;        /* 20px */
@@ -161,6 +163,18 @@ h6{
 
 p{
   font-size: var(--font-size-p);
+  font-weight: 400;
+  color: var(--color-primaryText);
+}
+
+.smallP{
+  font-size: var(--font-size-smallP);
+  font-weight: 400;
+  color: var(--color-primaryText);
+}
+
+.verySmallP{
+  font-size: var(--font-size-verySmallP);
   font-weight: 400;
   color: var(--color-primaryText);
 }

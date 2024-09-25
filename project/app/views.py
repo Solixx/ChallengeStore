@@ -18,7 +18,8 @@ def adminPanel(request):
 
 def adminListProducts(request):
     products = Products.objects.all().order_by('-created_at')
-    return render(request, "adminProducts.html", { "products": products })
+    categories = Categories.objects.all()
+    return render(request, "adminProducts.html", { "products": products, "categories": categories })
 
 def adminProductProfile(request, id):
     product = get_object_or_404(Products, id=id)
@@ -49,7 +50,8 @@ def adminProductEdit(request, id):
         return render(request, "adminProductProfile.html", { "product": product, "categories": categories })
     
     products = Products.objects.all()
-    return render(request, "adminProducts.html", {"products": products})
+    categories = Categories.objects.all()
+    return render(request, "adminProducts.html", { "products": products, "categories": categories })
 
 def adminProductDelete(request, id):
     get_object_or_404(Products, id=id)
@@ -93,7 +95,8 @@ def adminProductCreate(request):
         return render(request, "adminProductProfile.html", { "product": product, "categories": categories })
     
     products = Products.objects.all()
-    return render(request, "adminProducts.html", {"products": products})
+    categories = Categories.objects.all()
+    return render(request, "adminProducts.html", { "products": products, "categories": categories })
 
 
 """ CATEGORIES """
