@@ -85,6 +85,15 @@ button{
   padding: 15px 50px;
 }
 
+ul{
+  color: inherit;
+  list-style: none;
+}
+
+li{
+  color: var(--color-primaryText);
+}
+
 a {
   color: inherit;
   text-decoration: none;

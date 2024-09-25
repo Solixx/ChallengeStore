@@ -1,0 +1,124 @@
+:root {
+  --sidebar-width: 200px;
+  --adminNavbar-heigth: 100px;
+}
+
+.adminPanel {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  height: auto;
+
+  background-color: var(--color-secondaryText);
+  z-index: 0;
+  padding-left: var(--sidebar-width);
+  padding-top: calc(var(--adminNavbar-heigth) + 100px);
+}
+
+.adminPanel * {
+  color: #0c0d0e;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+
+  background-color: #0c0d0e;
+  z-index: 99;
+}
+
+.sidebar * {
+  color: var(--color-secondaryText);
+}
+
+.sidebar .sidebarLogo{
+    width: 100%;
+    height: var(--adminNavbar-heigth);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar .sidebarLogo img{
+    width: 75px;
+    height: 75px;
+    object-fit: fill;
+}
+
+.sidebarOptions{
+    height: calc(100vh - 195px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 50px;
+    margin-left: 15px;
+}
+
+.sidebarOptions li p{
+    color: #555555;
+}
+
+.sidebarOptions li a{
+    color: var(--color-secondaryText);
+    font-weight: bold;
+}
+
+.sidebarOptions ul{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    text-transform: uppercase;
+    margin-top: 10px;
+}
+
+.sidebarLogout{
+    width: 100%;
+    height: 95px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-inline: 15px;
+    padding-bottom: 45px;
+}
+
+.sidebarLogout hr{
+    width: 170px;
+    border: 1px solid #555555;
+    margin-bottom: 25px;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
+  height: var(--adminNavbar-heigth);
+  background-color: var(--color-secondaryText);
+  z-index: 98;
+
+  -webkit-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+}
+
+nav ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+nav ul li:first-child {
+  padding-left: 35px;
+}
+
+nav ul li:last-child {
+  padding-right: 70px;
+}

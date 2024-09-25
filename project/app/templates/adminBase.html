@@ -4,13 +4,62 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %} Admin Panel | Challenge Store {% endblock %}</title>
+    <title>
+      {% block title %} Admin Panel | Challenge Store {% endblock %}
+    </title>
 
     <link rel="stylesheet" href="{% static './styles/grid.css' %}" />
     <link rel="stylesheet" href="{% static './styles/globals.css' %}" />
-    <link rel="stylesheet" href="{% static './styles/style.css' %}" />
+    <link rel="stylesheet" href="{% static './styles/styleAdmin.css' %}" />
   </head>
   <body>
-    <div>{% block content %} {% endblock %}</div>
+    <div class="sidebar">
+      <div class="sidebarLogo">
+        <img
+          src="{% static '/public/logoWhite.png' %}"
+          width="100%"
+          heigth="100%"
+        />
+      </div>
+      <ul class="sidebarOptions">
+        <li>
+          <p>Dashboard</p>
+          <ul>
+            <li><a href="{% url 'adminPanel' %}">Dashboard</a></li>
+          </ul>
+        </li>
+        <li>
+          <p>Lists</p>
+          <ul>
+            <li><a href="{% url 'adminListProducts' %}">Products</a></li>
+            <li><a href="{% url 'adminListCategories' %}">Categories</a></li>
+          </ul>
+        </li>
+        <li>
+          <p>Create</p>
+          <ul>
+            <li><a href="{% url 'adminListProducts' %}">Products</a></li>
+            <li><a href="{% url 'adminListCategories' %}">Categories</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="sidebarLogout">
+        <hr>
+        <a {% comment %} href="{% url 'logout' %}" {% endcomment %}><h5>Logout</h5></a>
+      </div>
+    </div>
+    <div class="adminPanel">
+      <nav>
+        <ul>
+          <li>
+            <a>{% block adminPageTitle %} DASHBOARD {% endblock %}</a>
+          </li>
+          <li>
+            <a>ICON</a>
+          </li>
+        </ul>
+      </nav>
+      {% block content %} {% endblock %}
+    </div>
   </body>
 </html>
