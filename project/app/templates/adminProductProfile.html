@@ -4,7 +4,7 @@
 <div class="adminPanel">
   <div class="container">
     <h1 class="col12">Product</h1>
-    <form  action="{% url 'adminProductEdit' product.id %}" method="post" enctype="multipart/form-data">
+    <form id="updateForm" enctype="multipart/form-data" onSubmit="sendForm({{product.id}})">
       {% csrf_token %}
       <div class="col12">
         <label for="name">Name</label>
@@ -44,31 +44,20 @@
       </div>
     </form>
     <ul class="col12">
-        <li>{{ product.name }} - ${{ product.price }}</li>
-        <li>{{ product.stock }}</li>
+        <li id="productNamePrice"></li>
+        <li id="productStock"></li>
         {% if product.image %}
-          <li><img src="{{ product.image.url }}" alt="{{ product.name }}" /></li>
+          <li><img id="displayImage" src="" alt="" /></li>
         {% endif %}
     </ul>
-    <div class="col5">
-      <a href="{% url 'adminProductRestore' product.id %}">
-        <button>
-          Restore
-        </button>
-      </a>
-    </div>
-    <div class="col2"></div>
-    <div class="col5">
-      <a href="{% url 'adminProductDelete' product.id %}">
-        <button>
-          Delete
-        </button>
-      </a>
+    <div id="toggleStatusButton">
+
     </div>
   </div>
 </div>
 
 <script>
+  productJS = {}
   const imageInput = document.getElementById('image');
   imageInput.addEventListener('change', (event) => {
     const file = event.target.files[0];
@@ -76,21 +65,146 @@
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        // Get the preview images by their IDs
-        const img50 = document.getElementById('img-preview-50');
-        const img150 = document.getElementById('img-preview-150');
-        const img300 = document.getElementById('img-preview-300');
-        
-        // Update the image sources with the selected image's data URL
         const newSrc = e.target.result;
-        if (img50) img50.src = newSrc;
-        if (img150) img150.src = newSrc;
-        if (img300) img300.src = newSrc;
+        updatePreviewImages(newSrc)
       };
       
       // Read the selected image as a DataURL
       reader.readAsDataURL(file);
+    } else{
+      updatePreviewImages(productJS.image_url)
     }
   });
+
+  var sendForm = (id) => {
+    event.preventDefault()
+    var form = document.getElementById("updateForm");
+    var formData = new FormData(form);
+    
+    fetch('http://127.0.0.1:8000/adminPanel/products/edit/'+id+'/', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      updateProductJS(data)
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+
+  var disableProd = (id) => {
+    event.preventDefault()
+    var form = document.getElementById("disableForm");
+    var formData = new FormData(form);
+
+    fetch('http://127.0.0.1:8000/adminPanel/products/delete/'+id+'/', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      updateProductJS(data)
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+
+  var restoreProd = (id) => {
+    event.preventDefault()
+    var form = document.getElementById("restoreForm");
+    var formData = new FormData(form);
+
+    fetch('http://127.0.0.1:8000/adminPanel/products/restore/'+id+'/', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      updateProductJS(data)
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+
+  var displayStatusButton = () => {
+    if(String(productJS.is_deleted).toLowerCase() == 'true'){
+      document.getElementById("toggleStatusButton").innerHTML = `
+        <div class="col5">
+          <form id="restoreForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            <a class="adminProductContentButtonActive" onClick="restoreProd(${productJS.id})">
+              <button>
+                Restore
+              </button>
+            </a>
+          </form>
+        </div>
+      `
+      return
+    }
+    document.getElementById("toggleStatusButton").innerHTML = `
+      <div class="col5">
+        <form id="disableForm" enctype="multipart/form-data">
+          {% csrf_token %}
+          <a class="adminProductContentButtonDisable" onClick="disableProd(${productJS.id})">
+            <button>
+              Delete
+            </button>
+          </a>
+        </form>
+      </div>
+    `
+  }
+
+  var startValues = () => {
+    productJS = {}
+    productJS.id = {{ product.id }};
+    productJS.name = "{{ product.name }}";
+    productJS.price = {{ product.price }};
+    productJS.stock = {{ product.stock }};
+    productJS.image_name = "{{ product.image.name }}";
+    productJS.image_url = "{{ product.image.url }}";
+    productJS.category_id = {{ product.category_id }};
+    productJS.is_deleted = "{{ product.is_deleted }}";
+    
+    displayStatusButton()
+    insertHtmlContent()
+  }
+
+  var insertHtmlContent = () => {
+    document.getElementById('productNamePrice').innerHTML = productJS.name + ' - $' + productJS.price;
+    document.getElementById('productStock').innerHTML = productJS.stock;
+    document.getElementById('displayImage').src = productJS.image_url;
+  }
+
+  var updateProductJS = (data) => {
+    productJS = data.product
+
+    categoriesArray = JSON.parse(data.categories)
+    categories = categoriesArray.map((cat) => {
+      category = cat.fields
+      category.id = cat.pk
+      return category
+    })
+
+    displayStatusButton()
+    insertHtmlContent()
+  }
+
+  var updatePreviewImages = (newSrc) => {
+    const img50 = document.getElementById('img-preview-50');
+      const img150 = document.getElementById('img-preview-150');
+      const img300 = document.getElementById('img-preview-300');
+        
+      if (img50) img50.src = newSrc;
+      if (img150) img150.src = newSrc;
+      if (img300) img300.src = newSrc;
+  }
+
+  startValues()
 </script>
 {% endblock %}

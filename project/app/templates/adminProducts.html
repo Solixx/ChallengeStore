@@ -4,7 +4,7 @@
 {% block content %}
   <div class="container">
     {% for product in products %}
-        <div class="col4">
+        <div class="col4 colL4 colM6 colS3">
           <div class="adminProductBox {% if product.is_deleted %} adminProductBoxDisable {% endif %}">
             <a class="adminProductImg" href="{% url 'adminProductProfile' product.id %}">
               <img src="{{ product.image.url }}" alt="{{ product.name }}" />
@@ -15,11 +15,14 @@
                 <p class="smallP">${{ product.price }}</p>
               </div>
               <div class="adminProductContentCategory">
-                <select id="category" name="category" required value="product.category_id">
-                  {% for category in categories %}
-                    <option value="{{ category.id }}" {% if category.id == product.category_id %}selected{% endif %} {% if category.is_deleted %}disabled{% endif %}>{{ category.name }}</option>
-                  {% endfor %}
-                </select>
+                <form id="formCategory{{ product.id }}">
+                  {% csrf_token %}
+                  <select id="category{{product.id}}" name="category" required value="product.category_id" onChange="changeCategory({{product.id}})">
+                    {% for category in categories %}
+                      <option value="{{ category.id }}" {% if category.id == product.category_id %}selected{% endif %} {% if category.is_deleted %}disabled{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                  </select>
+                </form>
               </div>
               <div class="adminProductContentButton">
                   {% if product.is_deleted %}
@@ -41,14 +44,26 @@
           
         </div>
     {% endfor %}
-
-
-
-
-    <a class="col12" href="{% url 'adminPageProductNew' %}">
-      <button class="col12">
-        Criar Novo Produto 
-      </button>
-    </a>
   </div>
+
+  <script>
+
+    var changeCategory = (id) => {
+      var form = document.getElementById('formCategory' + id);
+      var formData = new FormData(form);
+      
+      fetch('http://127.0.0.1:8000/adminPanel/products/edit/'+id+'/', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+
+  </script>
 {% endblock %}
