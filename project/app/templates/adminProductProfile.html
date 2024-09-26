@@ -1,7 +1,6 @@
 {% extends "adminBase.html" %} 
 {% block title %} Admin Panel | Challenge Store {% endblock %} 
 {% block content %}
-<div class="adminPanel">
   <div class="container">
     <h1 class="col12">Product</h1>
     <form id="updateForm" enctype="multipart/form-data" onSubmit="sendForm({{product.id}})">
@@ -50,11 +49,22 @@
           <li><img id="displayImage" src="" alt="" /></li>
         {% endif %}
     </ul>
-    <div id="toggleStatusButton">
-
+    <div class="col12">
+        {% if product.is_deleted %}
+          <a class="adminProductContentButtonActive" href="{% url 'adminProductRestore' product.id %}">
+            <button>
+              Restore
+            </button>
+          </a>
+        {% else %}
+          <a class="adminProductContentButtonDisable" href="{% url 'adminProductDelete' product.id %}">
+            <button>
+              Delete
+            </button>
+          </a>
+        {% endif %}
     </div>
   </div>
-</div>
 
 <script>
   productJS = {}
@@ -130,36 +140,6 @@
     });
   }
 
-  var displayStatusButton = () => {
-    if(String(productJS.is_deleted).toLowerCase() == 'true'){
-      document.getElementById("toggleStatusButton").innerHTML = `
-        <div class="col5">
-          <form id="restoreForm" enctype="multipart/form-data">
-            {% csrf_token %}
-            <a class="adminProductContentButtonActive" onClick="restoreProd(${productJS.id})">
-              <button>
-                Restore
-              </button>
-            </a>
-          </form>
-        </div>
-      `
-      return
-    }
-    document.getElementById("toggleStatusButton").innerHTML = `
-      <div class="col5">
-        <form id="disableForm" enctype="multipart/form-data">
-          {% csrf_token %}
-          <a class="adminProductContentButtonDisable" onClick="disableProd(${productJS.id})">
-            <button>
-              Delete
-            </button>
-          </a>
-        </form>
-      </div>
-    `
-  }
-
   var startValues = () => {
     productJS = {}
     productJS.id = {{ product.id }};
@@ -171,7 +151,6 @@
     productJS.category_id = {{ product.category_id }};
     productJS.is_deleted = "{{ product.is_deleted }}";
     
-    displayStatusButton()
     insertHtmlContent()
   }
 
@@ -191,7 +170,6 @@
       return category
     })
 
-    displayStatusButton()
     insertHtmlContent()
   }
 

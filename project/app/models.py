@@ -81,7 +81,8 @@ class Products(models.Model):
 
     def restore(self):
         category = Categories.objects.get(id=self.category_id)
-        if not category.is_deleted:
-            self.is_deleted = False
-            self.save()
+        category.is_deleted = False
+        category.save()
+        self.is_deleted = False
+        self.save()
         

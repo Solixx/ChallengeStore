@@ -263,3 +263,45 @@ nav h3{
 .adminProductContentButtonDisable button{
   background-image: linear-gradient(to right, #f78ca0 0%, #f9748f 19%, #fd868c 60%, #fe9a8b 100%) !important;
 }
+
+
+/* List - Categories */
+
+.adminCategoriesName{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+.adminCategoriesName a{
+  width: 100%;
+}
+
+.adminCategoriesName h4{
+  font-weight: 400;
+}
+
+.adminCategoriesButtons{
+  margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.adminCategoriesButtons button{
+  font-size: var(--font-size-verySmallP);
+  text-transform: uppercase;
+  text-align: center;
+  width: 145px;
+  height: 35px;
+  margin: 5px auto;
+  padding: 0 !important;
+}
+
+.adminCategoriesHr{
+  margin-bottom: 25px;
+}

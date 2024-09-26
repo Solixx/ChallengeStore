@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .models import Categories, Products
 from django.core import serializers
 
@@ -92,47 +92,17 @@ def adminProductEdit(request, id):
 
 def adminProductDelete(request, id):
     product = get_object_or_404(Products, id=id)
-    categories = Categories.objects.all()
-
-    serializedProduct = {
-            'id': product.id,
-            'name': product.name,
-            'price': str(product.price),
-            'stock': product.stock,
-            'image_name': product.image.name if product.image else None,
-            'image_url': product.image.url if product.image else None,
-            'category_id': product.category.id if product.category else None,
-            'category_name': product.category.name if product.category else None,
-            'is_deleted': True
-        }
-    serializedCategories = serializers.serialize("json", categories)
-
-    product = Products.objects.get(id=id)
     product.delete()
 
-    return JsonResponse({"success": True, "message": "Product updated successfully", "product": serializedProduct, "categories": serializedCategories})
+    previous_page = request.META.get('HTTP_REFERER', '/')
+    return HttpResponseRedirect(previous_page)
 
 def adminProductRestore(request, id):
     product = get_object_or_404(Products, id=id)
-    categories = Categories.objects.all()
-
-    serializedProduct = {
-            'id': product.id,
-            'name': product.name,
-            'price': str(product.price),
-            'stock': product.stock,
-            'image_name': product.image.name if product.image else None,
-            'image_url': product.image.url if product.image else None,
-            'category_id': product.category.id if product.category else None,
-            'category_name': product.category.name if product.category else None,
-            'is_deleted': False
-        }
-    serializedCategories = serializers.serialize("json", categories)
-
-    product = Products.deleted_objects.get(id=id)
     product.restore()
 
-    return JsonResponse({"success": True, "message": "Product updated successfully", "product": serializedProduct, "categories": serializedCategories})
+    previous_page = request.META.get('HTTP_REFERER', '/')
+    return HttpResponseRedirect(previous_page)
 
 def adminPageProductNew(request):
     categories = Categories.objects.all()
@@ -186,8 +156,9 @@ def adminCategoryCreate(request):
 
 def adminCategoryProfile(request, id):
     category = get_object_or_404(Categories, id=id)
-    products = Products.objects.filter(category_id = id)
-    return render(request, "adminCategoryProfile.html", { "category": category, "products": products })
+    products = Products.objects.filter(category_id = id).order_by('-created_at')
+    categories = Categories.objects.all()
+    return render(request, "adminCategoryProfile.html", { "category": category, "products": products, "categories": categories })
 
 def adminCategoryEdit(request, id):
     category = get_object_or_404(Categories, id=id)
@@ -197,25 +168,28 @@ def adminCategoryEdit(request, id):
         category.name = request.POST["name"]
         category.save()
 
-        products = Products.objects.filter(category_id = id)
+        serializedCategory = {
+            'id': category.id,
+            'name': category.name,
+            'is_deleted': category.is_deleted,
+            'created_at': category.created_at,
+            'updated_at': category.updated_at
+        }
 
-        return render(request, "adminCategoryProfile.html", { "category": category, "products": products })
+        return JsonResponse({"success": True, "message": "Product updated successfully", "category": serializedCategory})
     
-    categories = Categories.objects.all()
-    return render(request, "adminCategories.html", {"categories": categories})
+    return JsonResponse({"error": "Invalid request method"}, status=405)
 
 def adminCategoryDelete(request, id):
-    get_object_or_404(Categories, id=id)
-
-    category = Categories.objects.get(id=id)
+    category = get_object_or_404(Categories, id=id)
     category.delete()
-    products = Products.objects.filter(category_id = id)
-    return render(request, "adminCategoryProfile.html", { "category": category, "products": products })
+
+    previous_page = request.META.get('HTTP_REFERER', '/')
+    return HttpResponseRedirect(previous_page)
 
 def adminCategoryRestore(request, id):
-    get_object_or_404(Categories, id=id)
-
-    category = Categories.deleted_objects.get(id=id)
+    category = get_object_or_404(Categories, id=id)
     category.restore()
-    products = Products.objects.filter(category_id = id)
-    return render(request, "adminCategoryProfile.html", { "category": category, "products": products })
+
+    previous_page = request.META.get('HTTP_REFERER', '/')
+    return HttpResponseRedirect(previous_page)

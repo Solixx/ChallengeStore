@@ -1,60 +1,166 @@
 {% extends "adminBase.html" %} 
 {% block title %} Admin Panel | Challenge Store {% endblock %} 
 {% block content %}
-<div class="adminPanel">
   <div class="container">
     <h1 class="col12">Category</h1>
-    <form  action="{% url 'adminCategoryEdit' category.id %}" method="post">
-      {% csrf_token %}
-      <div class="col12">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" value="{{ category.name }}">
-      </div>
-      <div class="col12">
-        <button>
-          Edit
-        </button>
-      </div>
-    </form>
-    <ul class="col12">
-        <li>{{ category.name }}</li>
-    </ul>
-    <div class="col5">
-      <a href="{% url 'adminCategoryRestore' category.id %}">
-        <button>
-          Restore
-        </button>
-      </a>
-    </div>
-    <div class="col2"></div>
-    <div class="col5">
-      <a href="{% url 'adminCategoryDelete' category.id %}">
-        <button>
-          Delete
-        </button>
-      </a>
+    <div class="col12">
+      <form id="updateForm" onSubmit="sendForm({{category.id}})">
+        {% csrf_token %}
+        <div class="col12">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" value="{{ category.name }}">
+        </div>
+        <div class="col12">
+          <button>
+            Edit
+          </button>
+        </div>
+      </form>
     </div>
     <div class="col12">
-      <ul class="col12">
-        {% for product in products %}
-        <a href="{% url 'adminProductProfile' product.id %}">
-          <li>{{ product.name }} - ${{ product.price }}</li>
-          <li>{{ product.stock }}</li>
-          <li><img src="{{ product.image.url }}" alt="{{ product.name }}" /></li>
-        </a>
-        <a href="{% url 'adminProductRestore' product.id %}">
-          <button>
-            Restore
-          </button>
-        </a>
-        <a href="{% url 'adminProductDelete' product.id %}">
-          <button>
-            Delete
-          </button>
-        </a>
-        {% endfor %}
-      </ul>
+      {% if category.is_deleted %}
+          <a class="adminProductContentButtonActive" href="{% url 'adminCategoryRestore' category.id %}">
+            <button>
+              Restore
+            </button>
+          </a>
+        {% else %}
+          <a class="adminProductContentButtonDisable" href="{% url 'adminCategoryDelete' category.id %}">
+            <button>
+              Delete
+            </button>
+          </a>
+        {% endif %}
     </div>
-  </div>
-</div>
+
+  {% for product in products %}
+    <div class="col4 colL4 colM6 colS3">
+      <div class="adminProductBox {% if product.is_deleted %} adminProductBoxDisable {% endif %}">
+        <a class="adminProductImg" href="{% url 'adminProductProfile' product.id %}">
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+        </a>
+        <div class="adminProductContent">
+          <div class="adminProductContentTop">
+            <p class="smallP">{{ product.name }}</p>
+            <p class="smallP">${{ product.price }}</p>
+          </div>
+          <div class="adminProductContentCategory">
+            <form id="formCategory{{ product.id }}">
+              {% csrf_token %}
+              <select id="category{{product.id}}" name="category" required value="product.category_id" onChange="changeCategory({{product.id}})">
+                {% for category in categories %}
+                  <option value="{{ category.id }}" {% if category.id == product.category_id %}selected{% endif %} {% if category.is_deleted %}disabled{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+              </select>
+            </form>
+          </div>
+          <div class="adminProductContentButton">
+              {% if product.is_deleted %}
+                <a class="adminProductContentButtonActive" href="{% url 'adminProductRestore' product.id %}">
+                  <button>
+                    Restore
+                  </button>
+                </a>
+              {% else %}
+                <a class="adminProductContentButtonDisable" href="{% url 'adminProductDelete' product.id %}">
+                  <button>
+                    Delete
+                  </button>
+                </a>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+
+  <script>
+    categoryJS = {}
+
+    var sendForm = (id) => {
+      event.preventDefault()
+      var form = document.getElementById("updateForm");
+      var formData = new FormData(form);
+
+      fetch('http://127.0.0.1:8000/adminPanel/categories/edit/'+id+'/', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        updateCategoryJS(data)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+
+    var disableCat = (id) => {
+      event.preventDefault()
+      var form = document.getElementById("disableForm");
+      var formData = new FormData(form);
+  
+      fetch('http://127.0.0.1:8000/adminPanel/categories/delete/'+id+'/', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        updateCategoryJS(data)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+  
+    var restoreCat = (id) => {
+      event.preventDefault()
+      var form = document.getElementById("restoreForm");
+      var formData = new FormData(form);
+  
+      fetch('http://127.0.0.1:8000/adminPanel/categories/restore/'+id+'/', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        updateCategoryJS(data)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+
+    var startValues = () => {
+      categoryJS.id = {{ category.id }}
+      categoryJS.name = "{{ category.name }}"
+      categoryJS.is_deleted = "{{ category.is_deleted }}"
+    }
+
+    var updateCategoryJS = (data) => {
+      categoryJS = data.categories
+    }
+
+
+    var changeCategory = (id) => {
+      var form = document.getElementById('formCategory' + id);
+      var formData = new FormData(form);
+      
+      fetch('http://127.0.0.1:8000/adminPanel/products/edit/'+id+'/', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        window.location.href = window.location.href
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+
+    startValues()
+
+  </script>
 {% endblock %}
