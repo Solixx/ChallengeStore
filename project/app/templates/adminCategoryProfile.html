@@ -33,6 +33,16 @@
         {% endif %}
     </div>
 
+    <div class="col12">
+      <form action="{% url 'adminCategoryProfile' category.id %}" method="POST">
+        {% csrf_token %}
+        <input type="search" name="search" placeholder="Search Products" value="{{ search }}" />
+        <button type="submit">
+          <h5>SEARCH</h5>
+          {% comment %} <i class="fa fa-search"></i> {% endcomment %}
+        </button>
+      </form>
+    </div>
   {% for product in products %}
     <div class="col4 colL4 colM6 colS3">
       <div class="adminProductBox {% if product.is_deleted %} adminProductBoxDisable {% endif %}">

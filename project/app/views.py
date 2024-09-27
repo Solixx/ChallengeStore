@@ -194,7 +194,19 @@ def adminCategoryCreate(request):
 @login_required
 def adminCategoryProfile(request, id):
     category = get_object_or_404(Categories, id=id)
-    products = Products.objects.filter(category_id = id).order_by('-created_at')
+    search = ""
+
+    if request.method == "POST":
+        search = request.POST.get("search")
+
+        if search:
+            products = Products.objects.filter(name__icontains = search, category_id = id).order_by('-created_at')
+        else:
+            products = Products.objects.filter(category_id = id).order_by('-created_at')
+
+    else:
+        products = Products.objects.filter(category_id = id).order_by('-created_at')
+        
     categories = Categories.objects.all()
     return render(request, "adminCategoryProfile.html", { "category": category, "products": products, "categories": categories })
 
