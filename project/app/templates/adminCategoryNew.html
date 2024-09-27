@@ -1,5 +1,6 @@
 {% extends "adminBase.html" %} 
 {% block title %} New Product | Challenge Store {% endblock %} 
+{% block adminPageTitle %} CREATE - CATEGORY {% endblock %} 
 {% block content %}
 <form  action="{% url 'adminCategoryCreate' %}" method="post" enctype="multipart/form-data">
   <div class="container">

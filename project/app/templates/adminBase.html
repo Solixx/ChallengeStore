@@ -15,11 +15,13 @@
   <body>
     <div class="sidebar">
       <div class="sidebarLogo">
-        <img
-          src="{% static '/public/logoWhite.png' %}"
-          width="100%"
-          heigth="100%"
-        />
+        <a href="{% url 'home' %}">
+          <img
+            src="{% static '/public/logoWhite.png' %}"
+            width="100%"
+            heigth="100%"
+          />
+        </a>
       </div>
       <ul class="sidebarOptions">
         <li>
