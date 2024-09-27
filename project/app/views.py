@@ -26,9 +26,21 @@ def adminPanel(request):
 
 @login_required
 def adminListProducts(request):
-    products = Products.objects.all().order_by('-created_at')
     categories = Categories.objects.all()
-    return render(request, "adminProducts.html", { "products": products, "categories": categories })
+    products = {}
+    search = ""
+
+    if request.method == "POST":
+        search = request.POST.get("search")
+
+        if search:
+            products = Products.objects.filter(name__icontains = search).order_by('-created_at')
+        else:
+            products = Products.objects.all().order_by('-created_at')
+    else:
+        products = Products.objects.all().order_by('-created_at')
+        
+    return render(request, "adminProducts.html", { "products": products, "categories": categories, "search": search })
 
 @login_required
 def adminProductProfile(request, id):
@@ -149,8 +161,19 @@ def adminProductCreate(request):
 
 @login_required
 def adminListCategories(request):
-    categories = Categories.objects.all().order_by('-created_at')
-    return render(request, "adminCategories.html", { "categories": categories })
+    search = ""
+
+    if request.method == "POST":
+        search = request.POST.get("search")
+
+        if search:
+            categories = Categories.objects.filter(name__icontains = search).order_by('-created_at')
+        else:
+            categories = Categories.objects.all().order_by('-created_at')
+    else:
+        categories = Categories.objects.all().order_by('-created_at')
+
+    return render(request, "adminCategories.html", { "categories": categories, "search": search })
 
 @login_required
 def adminPageCategoriesNew(request):

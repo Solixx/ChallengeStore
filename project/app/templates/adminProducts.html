@@ -3,6 +3,16 @@
 {% block adminPageTitle %} LIST - PRODUCTS {% endblock %} 
 {% block content %}
   <div class="container">
+    <div class="col12">
+      <form action="{% url 'adminListProducts' %}" method="POST">
+        {% csrf_token %}
+        <input type="search" name="search" placeholder="Search Products" value="{{ search }}" />
+        <button type="submit">
+          <h5>SEARCH</h5>
+          {% comment %} <i class="fa fa-search"></i> {% endcomment %}
+        </button>
+      </form>
+    </div>
     {% for product in products %}
         <div class="col4 colL4 colM6 colS3">
           <div class="adminProductBox {% if product.is_deleted %} adminProductBoxDisable {% endif %}">
