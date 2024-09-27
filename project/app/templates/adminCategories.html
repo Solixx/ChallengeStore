@@ -7,10 +7,6 @@
       <form action="{% url 'adminListCategories' %}" method="POST">
         {% csrf_token %}
         <input type="search" name="search" placeholder="Search Categories" value="{{ search }}" />
-        <button type="submit">
-          <h5>SEARCH</h5>
-          {% comment %} <i class="fa fa-search"></i> {% endcomment %}
-        </button>
       </form>
     </div>
     {% for category in categories %}

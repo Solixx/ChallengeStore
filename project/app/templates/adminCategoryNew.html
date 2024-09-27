@@ -1,10 +1,8 @@
 {% extends "adminBase.html" %} 
 {% block title %} New Product | Challenge Store {% endblock %} 
 {% block content %}
-<div class="adminPanel">
+<form  action="{% url 'adminCategoryCreate' %}" method="post" enctype="multipart/form-data">
   <div class="container">
-    <h1 class="col12">Category</h1>
-    <form  action="{% url 'adminCategoryCreate' %}" method="post" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="col12">
         <label for="name">Name</label>
@@ -15,8 +13,7 @@
           Create
         </button>
       </div>
-    </form>
   </div>
-</div>
+</form>
 
 {% endblock %}

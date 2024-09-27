@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 :root {
+  --font-size-verySmallP: 12px;            /* 12px */
+  --font-size-smallP: 14px;            /* 14px */
   --font-size-p: 1rem;            /* 16px */
   --font-size-h6: 1rem;         /* 16px */
   --font-size-h5: 1.25rem;        /* 20px */
@@ -64,7 +66,37 @@ body {
   position: inherit !important;
 }
 
-button{
+img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+input, select{
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+  font-size: var(--font-size-h6);
+  font-weight: 400;
+  color: #555555;
+  line-height: auto !important;
+  background: rgb(228,222,211);
+  background: transparent;
+  border: none;
+  border-bottom: #CCCCCC 1px solid;
+  outline: none;
+  padding: 5px 0 5px 5px;
+  margin-bottom: 50px;
+}
+
+.width100{
+  width: 100% !important;
+}
+
+.textBold{
+  font-weight: bold !important;
+}
+
+button, .fakeBtn{
   font-family: 'Roboto', sans-serif;
   font-size: var(--font-size-h6);
   font-weight: 500;
@@ -77,6 +109,41 @@ button{
   cursor: pointer;
   outline: none;
   padding: 15px 50px;
+}
+
+.fakeBtn{
+  background: #0C0D0E;
+}
+
+.fakeBtn *{
+  color: #EFECE6 !important;
+  margin: 0 auto !important;
+  text-align: center !important;
+}
+
+label{
+  font-family: 'Roboto', sans-serif;
+  font-size: var(--font-size-h6);
+  font-weight: bold;
+  color: #0C0D0E;
+  line-height: auto !important;
+}
+
+.invisibleBtn{
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+}
+
+ul{
+  color: inherit;
+  list-style: none;
+}
+
+li{
+  color: var(--color-primaryText);
 }
 
 a {
@@ -146,6 +213,18 @@ h6{
 
 p{
   font-size: var(--font-size-p);
+  font-weight: 400;
+  color: var(--color-primaryText);
+}
+
+.smallP{
+  font-size: var(--font-size-smallP);
+  font-weight: 400;
+  color: var(--color-primaryText);
+}
+
+.verySmallP{
+  font-size: var(--font-size-verySmallP);
   font-weight: 400;
   color: var(--color-primaryText);
 }

@@ -1,88 +1,85 @@
 {% extends "adminBase.html" %} 
 {% block title %} Admin Panel | Challenge Store {% endblock %} 
+{% block adminPageTitle %} EDIT - {{ category.name }} {% endblock %} 
 {% block content %}
+<form id="updateForm" onSubmit="sendForm({{category.id}})">
   <div class="container">
-    <h1 class="col12">Category</h1>
+    {% csrf_token %}
     <div class="col12">
-      <form id="updateForm" onSubmit="sendForm({{category.id}})">
-        {% csrf_token %}
-        <div class="col12">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" value="{{ category.name }}">
-        </div>
-        <div class="col12">
-          <button>
-            Edit
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" value="{{ category.name }}">
+    </div>
+  </div>
+</form>
+<div class="container">
+  <div class="col3">
+    <button class="width100" onClick="sendForm({{category.id}})">
+      Edit
+    </button>
+  </div>
+  <div class="col6"></div>
+  <div class="col3">
+    {% if category.is_deleted %}
+        <a class="adminProductContentButtonActive" href="{% url 'adminCategoryRestore' category.id %}">
+          <button class="width100">
+            Restore
           </button>
-        </div>
-      </form>
-    </div>
-    <div class="col12">
-      {% if category.is_deleted %}
-          <a class="adminProductContentButtonActive" href="{% url 'adminCategoryRestore' category.id %}">
-            <button>
-              Restore
-            </button>
-          </a>
-        {% else %}
-          <a class="adminProductContentButtonDisable" href="{% url 'adminCategoryDelete' category.id %}">
-            <button>
-              Delete
-            </button>
-          </a>
-        {% endif %}
-    </div>
-
-    <div class="col12">
-      <form action="{% url 'adminCategoryProfile' category.id %}" method="POST">
-        {% csrf_token %}
-        <input type="search" name="search" placeholder="Search Products" value="{{ search }}" />
-        <button type="submit">
-          <h5>SEARCH</h5>
-          {% comment %} <i class="fa fa-search"></i> {% endcomment %}
-        </button>
-      </form>
-    </div>
-  {% for product in products %}
-    <div class="col4 colL4 colM6 colS3">
-      <div class="adminProductBox {% if product.is_deleted %} adminProductBoxDisable {% endif %}">
-        <a class="adminProductImg" href="{% url 'adminProductProfile' product.id %}">
-          <img src="{{ product.image.url }}" alt="{{ product.name }}" />
         </a>
-        <div class="adminProductContent">
-          <div class="adminProductContentTop">
-            <p class="smallP">{{ product.name }}</p>
-            <p class="smallP">${{ product.price }}</p>
-          </div>
-          <div class="adminProductContentCategory">
-            <form id="formCategory{{ product.id }}">
-              {% csrf_token %}
-              <select id="category{{product.id}}" name="category" required value="product.category_id" onChange="changeCategory({{product.id}})">
-                {% for category in categories %}
-                  <option value="{{ category.id }}" {% if category.id == product.category_id %}selected{% endif %} {% if category.is_deleted %}disabled{% endif %}>{{ category.name }}</option>
-                {% endfor %}
-              </select>
-            </form>
-          </div>
-          <div class="adminProductContentButton">
-              {% if product.is_deleted %}
-                <a class="adminProductContentButtonActive" href="{% url 'adminProductRestore' product.id %}">
-                  <button>
-                    Restore
-                  </button>
-                </a>
-              {% else %}
-                <a class="adminProductContentButtonDisable" href="{% url 'adminProductDelete' product.id %}">
-                  <button>
-                    Delete
-                  </button>
-                </a>
-              {% endif %}
-          </div>
+      {% else %}
+        <a class="adminProductContentButtonDisable" href="{% url 'adminCategoryDelete' category.id %}">
+          <button class="width100">
+            Delete
+          </button>
+        </a>
+      {% endif %}
+  </div>
+  <div class="col12 searchBarCategoryProfile">
+    <form action="{% url 'adminCategoryProfile' category.id %}" method="POST">
+      {% csrf_token %}
+      <input type="search" name="search" placeholder="Search Products" value="{{ search }}" />
+    </form>
+  </div>
+  {% for product in products %}
+  <div class="col4 colL4 colM6 colS3">
+    <div class="adminProductBox {% if product.is_deleted %} adminProductBoxDisable {% endif %}">
+      <a class="adminProductImg" href="{% url 'adminProductProfile' product.id %}">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+      </a>
+      <div class="adminProductContent">
+        <div class="adminProductContentTop">
+          <p class="smallP">{{ product.name }}</p>
+          <p class="smallP">${{ product.price }}</p>
+        </div>
+        <div class="adminProductContentCategory">
+          <form id="formCategory{{ product.id }}">
+            {% csrf_token %}
+            <select id="category{{product.id}}" name="category" required value="product.category_id" onChange="changeCategory({{product.id}})">
+              {% for category in categories %}
+                <option value="{{ category.id }}" {% if category.id == product.category_id %}selected{% endif %} {% if category.is_deleted %}disabled{% endif %}>{{ category.name }}</option>
+              {% endfor %}
+            </select>
+          </form>
+        </div>
+        <div class="adminProductContentButton">
+            {% if product.is_deleted %}
+              <a class="adminProductContentButtonActive" href="{% url 'adminProductRestore' product.id %}">
+                <button>
+                  Restore
+                </button>
+              </a>
+            {% else %}
+              <a class="adminProductContentButtonDisable" href="{% url 'adminProductDelete' product.id %}">
+                <button>
+                  Delete
+                </button>
+              </a>
+            {% endif %}
         </div>
       </div>
     </div>
+  </div>
   {% endfor %}
+</div>
 
 
   <script>
@@ -99,6 +96,7 @@
       })
       .then(response => response.json())
       .then(data => {
+        window.location.href = window.location.href
         updateCategoryJS(data)
       })
       .catch((error) => {
