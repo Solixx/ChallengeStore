@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app'
+    'app',
 ]
 
 MIDDLEWARE = [
@@ -140,3 +140,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # The directory where files will b
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Redirect to login page if a view requires login
+LOGIN_URL = 'login'  # Name of the login URL pattern
+LOGIN_REDIRECT_URL = '/'  # Where to redirect after successful login
+LOGOUT_REDIRECT_URL = '/'

@@ -87,6 +87,14 @@ button{
   padding: 15px 50px;
 }
 
+.invisibleBtn{
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+}
+
 ul{
   color: inherit;
   list-style: none;

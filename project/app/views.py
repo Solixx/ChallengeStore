@@ -2,6 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .models import Categories, Products
 from django.core import serializers
+from django.contrib import messages
+from .forms import UserRegisterForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def home(request):
@@ -11,6 +14,7 @@ def products(request):
     products = Products.objects.all()
     return render(request, "products.html", { "products": products })
 
+@login_required
 def adminPanel(request):
     nProds = Products.objects.count()
     nProdsNoStock = Products.objects.filter(stock = 0).count()
@@ -20,17 +24,20 @@ def adminPanel(request):
 
 """ PRODUCTS """
 
+@login_required
 def adminListProducts(request):
     products = Products.objects.all().order_by('-created_at')
     categories = Categories.objects.all()
     return render(request, "adminProducts.html", { "products": products, "categories": categories })
 
+@login_required
 def adminProductProfile(request, id):
     product = get_object_or_404(Products, id=id)
     categories = Categories.objects.all()
     
     return render(request, "adminProductProfile.html", { "product": product, "categories": categories })
 
+@login_required
 def adminProductEdit(request, id):
     product = get_object_or_404(Products, id=id)
     categories = Categories.objects.all()
@@ -90,6 +97,7 @@ def adminProductEdit(request, id):
     
     return JsonResponse({"error": "Invalid request method"}, status=405)
 
+@login_required
 def adminProductDelete(request, id):
     product = get_object_or_404(Products, id=id)
     product.delete()
@@ -97,6 +105,7 @@ def adminProductDelete(request, id):
     previous_page = request.META.get('HTTP_REFERER', '/')
     return HttpResponseRedirect(previous_page)
 
+@login_required
 def adminProductRestore(request, id):
     product = get_object_or_404(Products, id=id)
     product.restore()
@@ -104,10 +113,12 @@ def adminProductRestore(request, id):
     previous_page = request.META.get('HTTP_REFERER', '/')
     return HttpResponseRedirect(previous_page)
 
+@login_required
 def adminPageProductNew(request):
     categories = Categories.objects.all()
     return render(request, "adminProductNew.html", { "categories": categories })
 
+@login_required
 def adminProductCreate(request):
     categories = Categories.objects.all()
     if request.method == "POST":
@@ -136,13 +147,16 @@ def adminProductCreate(request):
 
 """ CATEGORIES """
 
+@login_required
 def adminListCategories(request):
     categories = Categories.objects.all().order_by('-created_at')
     return render(request, "adminCategories.html", { "categories": categories })
 
+@login_required
 def adminPageCategoriesNew(request):
     return render(request, "adminCategoryNew.html")
 
+@login_required
 def adminCategoryCreate(request):
     if request.method == "POST":
         category = Categories()
@@ -154,12 +168,14 @@ def adminCategoryCreate(request):
     categories = Categories.objects.all()
     return render(request, "adminCategories.html", { "categories": categories })
 
+@login_required
 def adminCategoryProfile(request, id):
     category = get_object_or_404(Categories, id=id)
     products = Products.objects.filter(category_id = id).order_by('-created_at')
     categories = Categories.objects.all()
     return render(request, "adminCategoryProfile.html", { "category": category, "products": products, "categories": categories })
 
+@login_required
 def adminCategoryEdit(request, id):
     category = get_object_or_404(Categories, id=id)
 
@@ -180,6 +196,7 @@ def adminCategoryEdit(request, id):
     
     return JsonResponse({"error": "Invalid request method"}, status=405)
 
+@login_required
 def adminCategoryDelete(request, id):
     category = get_object_or_404(Categories, id=id)
     category.delete()
@@ -187,9 +204,26 @@ def adminCategoryDelete(request, id):
     previous_page = request.META.get('HTTP_REFERER', '/')
     return HttpResponseRedirect(previous_page)
 
+@login_required
 def adminCategoryRestore(request, id):
     category = get_object_or_404(Categories, id=id)
     category.restore()
 
     previous_page = request.META.get('HTTP_REFERER', '/')
     return HttpResponseRedirect(previous_page)
+
+
+
+""" AUTH """
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}!')
+            return redirect('login')  # Redirect to the login page after registration
+    else:
+        form = UserRegisterForm()
+    return render(request, 'registration/register.html', {'form': form})

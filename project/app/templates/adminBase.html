@@ -45,7 +45,11 @@
       </ul>
       <div class="sidebarLogout">
         <hr>
-        <a {% comment %} href="{% url 'logout' %}" {% endcomment %}><h5>Logout</h5></a>
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button class="invisibleBtn"><h5>Logout</h5></button>
+        </form>
+        
       </div>
     </div>
     <div class="adminPanel">

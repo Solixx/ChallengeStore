@@ -4,6 +4,8 @@ from . import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('products/', views.products, name='products'),
+    # AUTH
+    path('register/', views.register, name='register'),
     # Admin Panel - Dashboard
     path('adminPanel/', views.adminPanel, name='adminPanel'), #Dashboard
     # Admin Panel - Products
