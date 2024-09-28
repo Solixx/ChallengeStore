@@ -6,6 +6,66 @@ from django.contrib import messages
 from .forms import UserRegisterForm
 from django.contrib.auth.decorators import login_required
 
+def searchProductsForm(request, haveCategory):
+    products = Products.objects.all().order_by('-created_at')
+    search = ""
+    price = ""
+    stock = ""
+    category = 0
+
+    if request.method == "POST":
+        search = request.POST.get("search")
+        price = request.POST.get("searchPrice")
+        stock = request.POST.get("searchStock")
+        category = request.POST.get("searchCategory")
+
+        if search:
+            products = Products.objects.filter(name__icontains = search).order_by('-created_at')
+
+        if price and price != "-1":
+            if price == "0":
+                products = products.filter(price = 0).order_by('-created_at')
+            elif price == "100":
+                products = products.filter(price__lt = 100).filter(price__gt = 0).order_by('-created_at')
+            elif price == "250":
+                products = products.filter(price__lt = 250).filter(price__gt = 100).order_by('-created_at')
+            elif price == "500":
+                products = products.filter(price__lt = 500).filter(price__gt = 250).order_by('-created_at')
+            elif price == "500+":
+                products = products.filter(price__gte = 500).order_by('-created_at')
+
+        if stock and stock != "-1":
+            if stock == "0":
+                products = products.filter(stock = 0).order_by('-created_at')
+            elif stock == "25":
+                products = products.filter(stock__lt = 25).filter(stock__gt = 0).order_by('-created_at')
+            elif stock == "50":
+                products = products.filter(stock__lt = 50).filter(stock__gt = 25).order_by('-created_at')
+            elif stock == "100":
+                products = products.filter(stock__lt = 100).filter(stock__gt = 50).order_by('-created_at')
+            elif stock == "100+":
+                products = products.filter(stock__gte = 100).order_by('-created_at')
+
+        if haveCategory[0] and category and Categories.objects.filter(id=int(category)).exists():
+                products = products.filter(category_id = category).order_by('-created_at')
+        
+    if haveCategory[0]:
+        searchObj = {
+            "search": search,
+            "price": price,
+            "stock": stock,
+            "category": int(category)
+        }
+    else:
+        searchObj = {
+            "search": search,
+            "price": price,
+            "stock": stock,
+        }
+        products = products.filter(category_id = haveCategory[1])
+
+    return {"searchObj": searchObj, "products": products}
+
 # Create your views here.
 def home(request):
     return render(request, "home.html")
@@ -27,20 +87,11 @@ def adminPanel(request):
 @login_required
 def adminListProducts(request):
     categories = Categories.objects.all()
-    products = {}
-    search = ""
+    
+    searchObj = searchProductsForm(request, [True, "0"])['searchObj']
+    products = searchProductsForm(request, [True, "0"])['products']
 
-    if request.method == "POST":
-        search = request.POST.get("search")
-
-        if search:
-            products = Products.objects.filter(name__icontains = search).order_by('-created_at')
-        else:
-            products = Products.objects.all().order_by('-created_at')
-    else:
-        products = Products.objects.all().order_by('-created_at')
-        
-    return render(request, "adminProducts.html", { "products": products, "categories": categories, "search": search })
+    return render(request, "adminProducts.html", { "products": products, "categories": categories, "searchObj": searchObj })
 
 @login_required
 def adminProductProfile(request, id):
@@ -194,21 +245,12 @@ def adminCategoryCreate(request):
 @login_required
 def adminCategoryProfile(request, id):
     category = get_object_or_404(Categories, id=id)
-    search = ""
-
-    if request.method == "POST":
-        search = request.POST.get("search")
-
-        if search:
-            products = Products.objects.filter(name__icontains = search, category_id = id).order_by('-created_at')
-        else:
-            products = Products.objects.filter(category_id = id).order_by('-created_at')
-
-    else:
-        products = Products.objects.filter(category_id = id).order_by('-created_at')
-        
     categories = Categories.objects.all()
-    return render(request, "adminCategoryProfile.html", { "category": category, "products": products, "categories": categories })
+
+    searchObj = searchProductsForm(request, [False, id])['searchObj']
+    products = searchProductsForm(request, [False, id])['products']  
+    
+    return render(request, "adminCategoryProfile.html", { "category": category, "products": products, "categories": categories, "searchObj": searchObj })
 
 @login_required
 def adminCategoryEdit(request, id):

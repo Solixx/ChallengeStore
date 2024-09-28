@@ -4,9 +4,9 @@
 {% block content %}
   <div class="container">
     <div class="col12 colL8 colM6 colS3">
-      <form action="{% url 'adminListCategories' %}" method="POST">
+      <form id="searchForm" action="{% url 'adminListCategories' %}" method="POST">
         {% csrf_token %}
-        <input type="search" name="search" placeholder="Search Categories" value="{{ search }}" />
+        <input type="search" name="search" placeholder="Search Categories" value="{{ search }}" onBlur="forceSearchSubmit()" />
       </form>
     </div>
     {% for category in categories %}
@@ -36,4 +36,12 @@
     {% endfor %}
     
   </div>
+
+  <script>
+
+    var forceSearchSubmit = () => {
+      document.getElementById('searchForm').submit();
+    }
+
+  </script>
 {% endblock %}

@@ -33,53 +33,77 @@
         </a>
       {% endif %}
   </div>
-  <div class="col12 colL8 colM6 colS3 searchBarCategoryProfile">
-    <form action="{% url 'adminCategoryProfile' category.id %}" method="POST">
-      {% csrf_token %}
-      <input type="search" name="search" placeholder="Search Products" value="{{ search }}" />
-    </form>
-  </div>
-  {% for product in products %}
-    <div class="col4 colL4 colM6 colS3">
-          <div class="adminProductBox {% if product.is_deleted %} adminProductBoxDisable {% endif %}">
-            <a class="adminProductImg" href="{% url 'adminProductProfile' product.id %}">
-              <img src="{{ product.image.url }}" alt="{{ product.name }}" />
-            </a>
-            <div class="adminProductContent">
-              <div class="adminProductContentTop">
-                <p class="smallP">{{ product.name }}</p>
-                <p class="smallP">${{ product.price }}</p>
-              </div>
-              <div class="adminProductContentCategory">
-                <form id="formCategory{{ product.id }}">
-                  {% csrf_token %}
-                  <select id="category{{product.id}}" name="category" required value="product.category_id" onChange="changeCategory({{product.id}})">
-                    {% for category in categories %}
-                      <option value="{{ category.id }}" {% if category.id == product.category_id %}selected{% endif %} {% if category.is_deleted %}disabled{% endif %}>{{ category.name }}</option>
-                    {% endfor %}
-                  </select>
-                </form>
-              </div>
-              <div class="adminProductContentButton">
-                  {% if product.is_deleted %}
-                    <a class="adminProductContentButtonActive" href="{% url 'adminProductRestore' product.id %}">
-                      <button>
-                        Restore
-                      </button>
-                    </a>
-                  {% else %}
-                    <a class="adminProductContentButtonDisable" href="{% url 'adminProductDelete' product.id %}">
-                      <button>
-                        Delete
-                      </button>
-                    </a>
-                  {% endif %}
-              </div>
-            </div>
-          </div> 
-    </div>
-  {% endfor %}
 </div>
+  <form class="container searchBarCategoryProfile" id="searchForm" action="{% url 'adminCategoryProfile' category.id %}" method="POST">
+    {% csrf_token %}  
+    <input class="col4 colL3 colM2 colS3" type="search" name="search" placeholder="Search Products" value="{{ searchObj.search }}" onBlur="forceSearchSubmit()" />
+    <div class="col4 colL3 colM2 colS3">
+      <select name="searchPrice" value="{% if searchObj.price %}{{ searchObj.price }}{% else %}-1{% endif %}" onChange="forceSearchSubmit()">
+        <option value="-1">All Prices</option>
+        <option value="0" {% if searchObj.price == "0" %}selected{% endif %}>0€</option>
+        <option value="100" {% if searchObj.price == "100" %}selected{% endif %}>&lt;100€</option>
+        <option value="250" {% if searchObj.price == "250" %}selected{% endif %}>&lt;250€</option>
+        <option value="500" {% if searchObj.price == "500" %}selected{% endif %}>&lt;500€</option>
+        <option value="500+" {% if searchObj.price == "500+" %}selected{% endif %}>&ge;500€</option>
+      </select>
+    </div>
+    <div class="col4 colL2 colM2 colS3">
+      <select name="searchStock" value="{% if searchObj.stock %}{{ searchObj.stock }}{% else %}-1{% endif %}" onChange="forceSearchSubmit()">
+        <option value="-1">All Stocks</option>
+        <option value="0" {% if searchObj.stock == "0" %}selected{% endif %}>0</option>
+        <option value="25" {% if searchObj.stock == "25" %}selected{% endif %}>&lt;25</option>
+        <option value="50" {% if searchObj.stock == "50" %}selected{% endif %}>&lt;50</option>
+        <option value="100" {% if searchObj.stock == "100" %}selected{% endif %}>&lt;100</option>
+        <option value="100+" {% if searchObj.stock == "100+" %}selected{% endif %}>&ge;100</option>
+      </select>
+    </div>
+  </form>
+
+  <div class="container">
+
+  
+    {% for product in products %}
+      <div class="col4 colL4 colM6 colS3">
+            <div class="adminProductBox {% if product.is_deleted %} adminProductBoxDisable {% endif %}">
+              <a class="adminProductImg" href="{% url 'adminProductProfile' product.id %}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+              </a>
+              <div class="adminProductContent">
+                <div class="adminProductContentTop">
+                  <p class="smallP">{{ product.name }}</p>
+                  <p class="smallP">${{ product.price }}</p>
+                </div>
+                <div class="adminProductContentCategory">
+                  <form id="formCategory{{ product.id }}">
+                    {% csrf_token %}
+                    <select id="category{{product.id}}" name="category" required value="product.category_id" onChange="changeCategory({{product.id}})">
+                      {% for category in categories %}
+                        <option value="{{ category.id }}" {% if category.id == product.category_id %}selected{% endif %} {% if category.is_deleted %}disabled{% endif %}>{{ category.name }}</option>
+                      {% endfor %}
+                    </select>
+                  </form>
+                </div>
+                <div class="adminProductContentButton">
+                    {% if product.is_deleted %}
+                      <a class="adminProductContentButtonActive" href="{% url 'adminProductRestore' product.id %}">
+                        <button>
+                          Restore
+                        </button>
+                      </a>
+                    {% else %}
+                      <a class="adminProductContentButtonDisable" href="{% url 'adminProductDelete' product.id %}">
+                        <button>
+                          Delete
+                        </button>
+                      </a>
+                    {% endif %}
+                </div>
+              </div>
+            </div> 
+      </div>
+    {% endfor %}
+  </div>
+
 
 
   <script>
@@ -166,6 +190,10 @@
       .catch((error) => {
         console.error('Error:', error);
       });
+    }
+
+    var forceSearchSubmit = () => {
+      document.getElementById('searchForm').submit();
     }
 
     startValues()
