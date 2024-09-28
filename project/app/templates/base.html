@@ -13,53 +13,60 @@
   <body>
     <div class="navbar">
       <div class="container">
-        <div class="col1 logo">
-          <img
-            src="{% static '/public/logoWhite.png' %}"
-            width="3840"
-            height="2160"
-          />
+        <div class="col1 colL1 colM1 colS1 logo">
+          <a href="{% url 'home' %}">
+            <img
+              src="{% static '/public/logoWhite.png' %}"
+              width="3840"
+              height="2160"
+            />
+          </a>
         </div>
-        <div class="col11 menuOptions">
-          <div class="menuOpt">
-            <a href="{% url 'register' %}">
-                <h4>SIGN OUT</h4>
-                <hr />
-            </a>
-          </div>
-          <div class="menuOpt">
-            <a href="{% url 'login' %}">
-                <h4>SIGN IN</h4>
-                <hr />
-            </a>
-          </div>
-          <div class="menuOpt">
-            <a href="/products">
-                <h4>PRODUCTS</h4>
-                <hr />
-            </a>
-          </div>
-          <div class="menuOpt navOptActive">
+        <div class="col11 colL7 colM5 colS3 menuOptions">
+          {% if not user.is_authenticated %}
+            <div class="menuOpt">
+              <a href="{% url 'register' %}">
+                  <h4>SIGN OUT</h4>
+                  <hr />
+              </a>
+            </div>
+            <div class="menuOpt">
+              <a href="{% url 'login' %}">
+                  <h4>SIGN IN</h4>
+                  <hr />
+              </a>
+            </div>
+          {% else %}
+            <div class="menuOpt">
+              <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button class="invisibleBtn"><h4>LOGOUT</h4></button>
+              </form>
+            </div>
+          {% endif %}
+          <div class="menuOpt {% comment %} navOptActive {% endcomment %}">
             <a href="/">
                 <h4>HOME</h4>
                 <hr />
             </a>
           </div>
-          <div class="menuOpt">
-            <a href="/adminPanel">
-                <h4>ADMIN PANEL</h4>
-                <hr />
-            </a>
-          </div>
+          {% if user.is_authenticated %}
+            <div class="menuOpt">
+              <a href="/adminPanel">
+                  <h4>ADMIN PANEL</h4>
+                  <hr />
+              </a>
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>
     <div>{% block content %} {% endblock %}</div>
     <footer class="container">
-      <div class="col12 footerLine">
+      <div class="col12 colL8 colM6 colS3 footerLine">
         <hr />
       </div>
-      <div class="col12 footerTop">
+      <div class="col12 colL8 colM6 colS3 footerTop">
         <div class="logo">
           <img src="{% static '/public/logoWhite.png' %}" width="3840" height="2160" />
         </div>
@@ -73,7 +80,7 @@
           <h1 class="title">E</h1>
         </div>
       </div>
-      <div class="col2 footerMidLeft">
+      <div class="col2 colL2 colM1 colS3 footerMidLeft">
         <p>Navigation</p>
         <div class="footerOptionsList">
           <div class="footerOption">
@@ -94,7 +101,7 @@
           </div>
         </div>
       </div>
-      <div class="col2 footerMidLeft">
+      <div class="col2 colL2 colM1 colS3 footerMidLeft">
         <p>Categories</p>
         <div class="footerOptionsList">
           <div class="footerOption">
@@ -115,7 +122,7 @@
           </div>
         </div>
       </div>
-      <div class="col8 footerMidRight">
+      <div class="col8 colL4 colM4 colS3 footerMidRight">
         <div class="footerRightInfos">
           <hr />
           <div class="footerRightInfosText">
