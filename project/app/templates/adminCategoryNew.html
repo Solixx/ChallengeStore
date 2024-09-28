@@ -5,11 +5,11 @@
 <form  action="{% url 'adminCategoryCreate' %}" method="post" enctype="multipart/form-data">
   <div class="container">
       {% csrf_token %}
-      <div class="col12">
+      <div class="col12 colL8 colM6 colS3">
         <label for="name">Name</label>
         <input type="text" id="name" name="name" value="" required>
       </div>
-      <div class="col12">
+      <div class="col12 colL8 colM6 colS3">
         <button>
           Create
         </button>

@@ -3,19 +3,19 @@
 {% block adminPageTitle %} LIST - CATEGORIES {% endblock %} 
 {% block content %}
   <div class="container">
-    <div class="col12">
+    <div class="col12 colL8 colM6 colS3">
       <form action="{% url 'adminListCategories' %}" method="POST">
         {% csrf_token %}
         <input type="search" name="search" placeholder="Search Categories" value="{{ search }}" />
       </form>
     </div>
     {% for category in categories %}
-      <ul class="adminCategoriesName col10">
+      <ul class="adminCategoriesName col10 colL6 colM4 colS3">
         <a href="{% url 'adminCategoryProfile' category.id %}">
           <li><h4>{{ category.name }}</h4></li>
         </a>
       </ul>
-      <div class="adminCategoriesButtons col2">
+      <div class="adminCategoriesButtons col2 colL2 colM2 colS3">
         {% if category.is_deleted %}
           <a class="adminProductContentButtonActive" href="{% url 'adminCategoryRestore' category.id %}">
             <button>
@@ -30,7 +30,7 @@
           </a>
         {% endif %}
       </div>
-      <div class="adminCategoriesHr col12">
+      <div class="adminCategoriesHr col12 colL8 colM6 colS3">
         <hr>
       </div>
     {% endfor %}
