@@ -1,0 +1,138 @@
+{% extends "adminBase.html" %} 
+{% block title %} Admin Panel | Challenge Store {% endblock %} 
+{% block adminPageTitle %} EDIT - {{ category.name }} {% endblock %} 
+{% block content %}
+<form id="updateForm" onSubmit="sendForm({{category.id}})">
+  <div class="container">
+    {% csrf_token %}
+    <div class="col12 colL8 colM6 colS3">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" value="{{ category.name }}">
+    </div>
+  </div>
+</form>
+<div class="container">
+  <div class="col3 colL3 colM2 colS1">
+    <button class="width100" onClick="sendForm({{category.id}})">
+      Edit
+    </button>
+  </div>
+  <div class="col6 colL2 colM2 colS1"></div>
+  <div class="col3 colL3 colM2 colS1">
+    {% if category.is_deleted %}
+        <a class="adminProductContentButtonActive" href="{% url 'adminCategoryRestore' category.id %}">
+          <button class="width100">
+            Restore
+          </button>
+        </a>
+      {% else %}
+        <a class="adminProductContentButtonDisable" href="{% url 'adminCategoryDelete' category.id %}">
+          <button class="width100">
+            Delete
+          </button>
+        </a>
+      {% endif %}
+  </div>
+</div>
+
+  <div class="searchBarCategoryProfile"></div>
+  {% include "./includes/_searchForm.html" with urlForm="adminCategoryProfile" haveParam=category.id canHaveMultySearches="True" canHaveCategories="False" %}
+
+  {% include "./includes/_listProducts.html" %}
+
+  {% include "./includes/_pagination.html" with page_obj=products %}
+
+  <script>
+    categoryJS = {}
+
+    var sendForm = (id) => {
+      event.preventDefault()
+      var form = document.getElementById("updateForm");
+      var formData = new FormData(form);
+
+      fetch('http://127.0.0.1:8000/adminPanel/categorie/edit/'+id+'/', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        window.location.href = window.location.href
+        updateCategoryJS(data)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+
+    var disableCat = (id) => {
+      event.preventDefault()
+      var form = document.getElementById("disableForm");
+      var formData = new FormData(form);
+  
+      fetch('http://127.0.0.1:8000/adminPanel/categorie/delete/'+id+'/', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        updateCategoryJS(data)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+  
+    var restoreCat = (id) => {
+      event.preventDefault()
+      var form = document.getElementById("restoreForm");
+      var formData = new FormData(form);
+  
+      fetch('http://127.0.0.1:8000/adminPanel/categorie/restore/'+id+'/', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        updateCategoryJS(data)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+
+    var startValues = () => {
+      categoryJS.id = {{ category.id }}
+      categoryJS.name = "{{ category.name }}"
+      categoryJS.is_deleted = "{{ category.is_deleted }}"
+    }
+
+    var updateCategoryJS = (data) => {
+      categoryJS = data.categories
+    }
+
+
+    var changeCategory = (id) => {
+      var form = document.getElementById('formCategory' + id);
+      var formData = new FormData(form);
+      
+      fetch('http://127.0.0.1:8000/adminPanel/product/edit/'+id+'/', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        window.location.href = window.location.href
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+
+    var forceSearchSubmit = () => {
+      document.getElementById('searchForm').submit();
+    }
+
+    startValues()
+
+  </script>
+{% endblock %}

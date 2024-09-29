@@ -3,8 +3,8 @@
 <h2>Run Project</h2>
 
 - Open CMD
-- Type: "cd frontend"
-- Type: "npm run dev" or "npm start"
+- Type: "cd project"
+- Type: "python manage.py runserver"
 
 <br />
 <h2>Prints</h2>

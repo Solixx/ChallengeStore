@@ -1,0 +1,34 @@
+{% extends "adminBase.html" %} 
+{% block title %} Admin Panel | Challenge Store {% endblock %} 
+{% block adminPageTitle %} LIST - PRODUCTS {% endblock %} 
+{% block content %}
+  {% include "./includes/_searchForm.html" with urlForm="adminListProducts" canHaveMultySearches="True" canHaveCategories="True" %}
+  
+  {% include "./includes/_listProducts.html" %}
+  
+  {% include "./includes/_pagination.html" with page_obj=products %}
+  <script>
+
+    var changeCategory = (id) => {
+      var form = document.getElementById('formCategory' + id);
+      var formData = new FormData(form);
+      
+      fetch('http://127.0.0.1:8000/adminPanel/product/edit/'+id+'/', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+
+    var forceSearchSubmit = () => {
+      document.getElementById('searchForm').submit();
+    }
+
+  </script>
+{% endblock %}

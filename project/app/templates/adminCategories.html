@@ -1,0 +1,45 @@
+{% extends "adminBase.html" %} 
+{% block title %} Admin Panel | Challenge Store {% endblock %} 
+{% block adminPageTitle %} LIST - CATEGORIES {% endblock %} 
+{% block content %}
+
+  {% include "./includes/_searchForm.html" with urlForm="adminListCategories" canHaveMultySearches="False" canHaveCategories="False" %}
+  
+  <div class="container">
+    {% for category in categories %}
+      <ul class="adminCategoriesName col10 colL6 colM4 colS3">
+        <a href="{% url 'adminCategoryProfile' category.id %}">
+          <li><h4>{{ category.name }}</h4></li>
+        </a>
+      </ul>
+      <div class="adminCategoriesButtons col2 colL2 colM2 colS3">
+        {% if category.is_deleted %}
+          <a class="adminProductContentButtonActive" href="{% url 'adminCategoryRestore' category.id %}">
+            <button>
+              Restore
+            </button>
+          </a>
+        {% else %}
+          <a class="adminProductContentButtonDisable" href="{% url 'adminCategoryDelete' category.id %}">
+            <button>
+              Delete
+            </button>
+          </a>
+        {% endif %}
+      </div>
+      <div class="adminCategoriesHr col12 colL8 colM6 colS3">
+        <hr>
+      </div>
+  {% endfor %}
+  </div>
+
+  {% include "./includes/_pagination.html" with page_obj=categories %}
+
+  <script>
+
+    var forceSearchSubmit = () => {
+      document.getElementById('searchForm').submit();
+    }
+
+  </script>
+{% endblock %}

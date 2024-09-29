@@ -1,0 +1,610 @@
+:root {
+  --sidebar-width: 125px;
+  --sidebar-width-negative: -125px;
+  --adminNavbar-heigth: 100px;
+  --adminProductBoxContent-heigth: 165px;
+  --border-radius: 5px;
+}
+
+/* GRAPHS */
+.graphs{
+  width: 100%;
+  height: 240px;
+  margin-bottom: 20px;
+}
+
+
+/* General */
+
+.adminMenuTitle {
+  font-size: var(--font-size-h6);
+  text-transform: uppercase;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
+
+.adminPanel {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  height: auto;
+
+  background-color: var(--color-secondaryText);
+  z-index: 0;
+  padding-left: var(--sidebar-width);
+  padding-top: calc(var(--adminNavbar-heigth) + 50px);
+}
+
+.adminPanel * {
+  color: #0c0d0e;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+
+  background-color: #0c0d0e;
+  z-index: 99;
+}
+
+.sidebar * {
+  color: var(--color-secondaryText);
+}
+
+.sidebar .sidebarLogo {
+  width: 100%;
+  height: var(--adminNavbar-heigth);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar .sidebarLogo img {
+  width: 75px;
+  height: 75px;
+  object-fit: fill;
+}
+
+.sidebarOptions {
+  height: calc(100vh - 195px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 50px;
+  margin-left: 15px;
+}
+
+.sidebarOptions li p {
+  color: #555555;
+}
+
+.sidebarOptions li a {
+  color: var(--color-secondaryText);
+  font-weight: bold;
+}
+
+.sidebarOptions ul {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+.sidebarLogout {
+  width: 100%;
+  height: 95px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-inline: 15px;
+  padding-bottom: 45px;
+}
+
+.sidebarLogout hr {
+  width: 100%;
+  border: 1px solid #555555;
+  margin-bottom: 25px;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-left: var(--sidebar-width);
+  width: 100vw;
+  height: var(--adminNavbar-heigth);
+  background-color: var(--color-secondaryText);
+  z-index: 98;
+
+  -webkit-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+}
+
+nav ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+nav ul li:first-child {
+  min-width: auto;
+  padding-left: 15px;
+  overflow-x: hidden;
+}
+
+nav ul li:last-child {
+  width: 100px;
+  padding-right: 15px;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  overflow: hidden;
+}
+
+nav ul li:last-child a{
+  width: 50px;
+  height: 50px;
+}
+
+nav ul li:last-child img{
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+nav h3 {
+  color: #555555 !important;
+  font-weight: bold;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+}
+
+/* Dashboard */
+
+.statisticsBox {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: var(--border-radius) !important;
+  background-color: var(--color-secondaryText);
+
+  -webkit-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+}
+
+.statisticsBox h5 {
+  color: var(--color-primaryText) !important;
+  padding-inline: 15px;
+}
+
+/* List - Products */
+
+.adminProductBox {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+
+  border-radius: var(--border-radius) !important;
+  background-color: var(--color-secondaryText);
+
+  -webkit-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+}
+
+.adminProductBoxDisable img {
+  opacity: 0.75 !important;
+}
+
+.adminProductImg {
+  width: 100%;
+  height: calc(100% - var(--adminProductBoxContent-heigth));
+  margin-bottom: auto;
+}
+
+.adminProductImg img {
+  border-top-left-radius: var(--border-radius) !important;
+  border-top-right-radius: var(--border-radius) !important;
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+}
+
+.adminProductContent {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-inline: 25px;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.adminProductContent * {
+  color: #0c0d0e;
+}
+
+.adminProductContentTop {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.adminProductContentCategory {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.adminProductContentCategory select {
+  width: 100%;
+  height: 32px;
+  border: none;
+  border-bottom: 1px solid #cccccc;
+  background-color: transparent;
+  color: #0c0d0e;
+}
+
+.adminProductContentButton {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.adminProductContentButton a {
+  display: block;
+  width: 150px !important;
+  height: 35px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.adminProductContentButton button {
+  font-size: var(--font-size-verySmallP);
+  text-transform: uppercase;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 !important;
+}
+
+.adminProductContentButtonActive button {
+  background-image: linear-gradient(
+    to right,
+    #37ecba 0%,
+    #72afd3 100%
+  ) !important;
+}
+
+.adminProductContentButtonDisable button {
+  background-image: linear-gradient(
+    to right,
+    #f78ca0 0%,
+    #f9748f 19%,
+    #fd868c 60%,
+    #fe9a8b 100%
+  ) !important;
+}
+
+/* List - Categories */
+
+.adminCategoriesName {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+.adminCategoriesName a {
+  width: 100%;
+}
+
+.adminCategoriesName h4 {
+  font-weight: 400;
+}
+
+.adminCategoriesButtons {
+  margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.adminCategoriesButtons a{
+  width: 100%;
+}
+
+.adminCategoriesButtons button {
+  font-size: var(--font-size-verySmallP);
+  text-transform: uppercase;
+  text-align: center;
+  width: 100%;
+  height: 35px;
+  margin: 5px auto;
+  padding: 0 !important;
+}
+
+.adminCategoriesHr {
+  margin-bottom: 25px;
+}
+
+/* Forms */
+
+.categoriesSelect {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.displayImages {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.changeImageBtn{
+  margin-bottom: 50px;
+}
+
+#img-preview-300 {
+  width: 50% !important;
+  height: 50% !important;
+}
+
+#img-preview-150 {
+  width: 25% !important;
+  height: 25% !important;
+}
+
+#img-preview-50 {
+  width: 15% !important;
+  height: 15% !important;
+}
+
+.preview{
+  position: relative;
+  margin-top: 100px;
+  padding-bottom: 50px;
+}
+
+.preview h2{
+  margin-bottom: 25px;
+}
+
+.previewImg{
+  width: 100%;
+  height: 410px;
+}
+
+.previewImg img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.previewInfo{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 0;
+}
+
+.stincky{
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.previewInfoText{
+  width: 100%;
+  padding-block: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+
+.flexPreviewInfo{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+
+.previewInfoText h3{
+  min-width: 70%;
+  word-wrap: break-word;
+}
+
+.previewInfoText h4{
+  width: auto;
+  max-width: 100%;
+  color: #555555;
+  word-wrap: break-word;
+}
+
+#productPrice{
+  text-align: right;
+}
+
+.searchBarCategoryProfile{
+  margin-top: 100px;
+}
+
+
+@media (min-width: 768px) {
+  :root {
+    --sidebar-width: 200px;
+    --adminNavbar-heigth: 100px;
+    --adminProductBoxContent-heigth: 165px;
+    --border-radius: 5px;
+  }
+
+  .graphs{
+    height: 480px;
+  }
+
+  .adminMenuTitle {
+    font-size: var(--font-size-h3);
+  }
+
+  nav ul li:first-child {
+    padding-left: 35px;
+  }
+  
+  nav ul li:last-child {
+    padding-right: 70px;
+    width: 30%;
+  }
+
+  .displayImages {
+    gap: 10px;
+  }
+
+  .changeImageBtn{
+    margin-bottom: 0;
+  }
+  
+  #img-preview-300 {
+    width: 184px !important;
+    height: 184px !important;
+  }
+  
+  #img-preview-150 {
+    width: 64px !important;
+    height: 64px !important;
+  }
+  
+  #img-preview-50 {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .previewInfo button{
+    padding: 5px 15px;
+  }
+
+  .stincky{
+    position: sticky;
+    top: 100px;
+    left: 0;
+    z-index: 1;
+    height: calc(100% - 200px);
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .previewImg{
+    height: 820px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .graphs{
+    height: 360px;
+  }
+
+  .adminProductImg img {
+    height: 640px;
+  }
+
+  .adminCategoriesButtons button {
+    width: 185px;
+  }
+
+  .displayImages {
+    gap: 5px;
+  }
+  
+  #img-preview-300 {
+    width: 300px !important;
+    height: 300px !important;
+  }
+  
+  #img-preview-150 {
+    width: 150px !important;
+    height: 150px !important;
+  }
+  
+  #img-preview-50 {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .previewInfo button{
+    padding: 15px 50px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .graphs{
+    height: 480px;
+  }
+  
+  .displayImages {
+    gap: 20px;
+  }
+  
+  #img-preview-300 {
+    width: 300px !important;
+    height: 300px !important;
+  }
+  
+  #img-preview-150 {
+    width: 150px !important;
+    height: 150px !important;
+  }
+  
+  #img-preview-50 {
+    width: 50px !important;
+    height: 50px !important;
+  }
+}

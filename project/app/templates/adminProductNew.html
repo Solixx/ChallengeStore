@@ -1,0 +1,67 @@
+{% extends "adminBase.html" %} 
+{% load static %}
+{% block title %} New Product | Challenge Store {% endblock %} 
+{% block adminPageTitle %} CREATE - PRODUCT {% endblock %} 
+{% block content %}
+<form id="createForm" action="{% url 'adminProductCreate' %}" method="post" enctype="multipart/form-data">
+  <div class="container">
+      {% csrf_token %}
+      {% include "./includes/_productsForm.html" %}
+      <div class="col3 colL3 colM2 colS1">
+        <button class="width100">
+          Create
+        </button>
+      </div>
+  </div>
+</form>
+
+<script>
+  const imageInput = document.getElementById('image');
+  imageInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const newSrc = e.target.result;
+        updatePreviewImages(newSrc)
+      };
+      
+      // Read the selected image as a DataURL
+      reader.readAsDataURL(file);
+    } else{
+      updatePreviewImages("")
+    }
+  });
+
+  var updatePreviewImages = (newSrc) => {
+    const defaultImageUrl = "{% static 'public/noImage.jpg' %}";
+
+    const img50 = document.getElementById('img-preview-50');
+    const img150 = document.getElementById('img-preview-150');
+    const img300 = document.getElementById('img-preview-300');
+        
+    if(newSrc){
+      img50.src = newSrc;
+      img150.src = newSrc;
+      img300.src = newSrc;
+    } else{
+      img50.src = defaultImageUrl;
+      img150.src = defaultImageUrl;
+      img300.src = defaultImageUrl;
+    }
+  }
+
+  var activateImageSelector = () => {
+    imageInput.click()
+  }
+
+  document.getElementById('createForm').addEventListener('submit', function(event) {
+    const fileInput = document.getElementById('image');
+    if (!fileInput.value) {
+      alert('Please upload an image.');
+      event.preventDefault();
+    }
+  });
+</script>
+{% endblock %}

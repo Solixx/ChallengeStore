@@ -1,0 +1,198 @@
+{% extends "adminBase.html" %} 
+{% block title %} Admin Panel | Challenge Store {% endblock %} 
+{% block adminPageTitle %} EDIT - {{ product.name }} {% endblock %} 
+{% block content %}
+  <form id="updateForm" enctype="multipart/form-data" onSubmit="sendForm({{product.id}})">
+    <div class="container">
+      {% csrf_token %}
+      {% include "./includes/_productsForm.html" %}
+      <input type="submit" style="display: none;" />
+    </div>
+  </form>
+  <div class="container">
+    <div class="col3 colL3 colM2 colS1">
+      <button class="width100" onClick="sendForm({{product.id}})">
+        Edit
+      </button>
+    </div>
+    <div class="col6 colL2 colM2 colS1"></div>
+    <div class="col3 colL3 colM2 colS1">
+      {% if product.is_deleted %}
+        <a class="adminProductContentButtonActive" href="{% url 'adminProductRestore' product.id %}">
+          <button class="width100">
+            Restore
+          </button>
+        </a>
+      {% else %}
+        <a class="adminProductContentButtonDisable" href="{% url 'adminProductDelete' product.id %}">
+          <button class="width100">
+            Delete
+          </button>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="container preview">
+    <div class="col12 colL8 colM6 colS3">
+      <h2>Preview</h2>
+    </div>
+    <div class="col8 colL5 colM4 colS3 previewImg">
+        {% if product.image %}
+          <img id="displayImage" src="" alt="" />
+        {% endif %}
+    </div>
+    <div class="col4 colL3 colM2 colS3 previewInfo">
+      <div class="stincky">
+        <div class="previewInfoText">
+          <h5 id="productRating"></h5>
+          <div class="flexPreviewInfo">
+            <h3 id="productName"></h3>
+            <h4 id="productPrice"></h4>
+          </div>
+        </div>
+
+        {% if product.is_deleted %}
+        <div class="adminProductContentButtonDisable width100">
+          <button class="width100 textBold" disabled>
+            UNAVAILABLE
+          </button>
+        </div>
+        {% else %}
+        <div class="adminProductContentButtonActive width100">
+          <button class="width100 textBold" disabled>
+            BUY
+          </button>
+        {% endif %}
+        
+      </div>
+    </div>
+  </div>
+
+<script>
+  productJS = {}
+  const imageInput = document.getElementById('image');
+  imageInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const newSrc = e.target.result;
+        updatePreviewImages(newSrc)
+      };
+      
+      // Read the selected image as a DataURL
+      reader.readAsDataURL(file);
+    } else{
+      updatePreviewImages(productJS.image_url)
+    }
+  });
+
+  var sendForm = (id) => {
+    event.preventDefault()
+    var form = document.getElementById("updateForm");
+    var formData = new FormData(form);
+    
+    fetch('http://127.0.0.1:8000/adminPanel/product/edit/'+id+'/', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      updateProductJS(data)
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+
+  var disableProd = (id) => {
+    event.preventDefault()
+    var form = document.getElementById("disableForm");
+    var formData = new FormData(form);
+
+    fetch('http://127.0.0.1:8000/adminPanel/product/delete/'+id+'/', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      updateProductJS(data)
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+
+  var restoreProd = (id) => {
+    event.preventDefault()
+    var form = document.getElementById("restoreForm");
+    var formData = new FormData(form);
+
+    fetch('http://127.0.0.1:8000/adminPanel/product/restore/'+id+'/', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      updateProductJS(data)
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+
+  var startValues = () => {
+    productJS = {}
+    productJS.id = {{ product.id }};
+    productJS.name = "{{ product.name }}";
+    productJS.price = {{ product.price }};
+    productJS.stock = {{ product.stock }};
+    productJS.rating = {{ product.rating }}
+    productJS.image_name = "{{ product.image.name }}";
+    productJS.image_url = "{{ product.image.url }}";
+    productJS.category_id = {{ product.category_id }};
+    productJS.is_deleted = "{{ product.is_deleted }}";
+    
+    insertHtmlContent()
+  }
+
+  var insertHtmlContent = () => {
+    document.getElementById('productName').innerHTML = productJS.name;
+    document.getElementById('productPrice').innerHTML = '$' + productJS.price;
+    document.getElementById('productRating').innerHTML = 'Rating: ' + productJS.rating;
+    // document.getElementById('productStock').innerHTML = productJS.stock;
+    document.getElementById('displayImage').src = productJS.image_url;
+  }
+
+  var updateProductJS = (data) => {
+    productJS = data.product
+
+    categoriesArray = JSON.parse(data.categories)
+    categories = categoriesArray.map((cat) => {
+      category = cat.fields
+      category.id = cat.pk
+      return category
+    })
+
+    insertHtmlContent()
+  }
+
+  var updatePreviewImages = (newSrc) => {
+    const img50 = document.getElementById('img-preview-50');
+      const img150 = document.getElementById('img-preview-150');
+      const img300 = document.getElementById('img-preview-300');
+        
+      if (img50) img50.src = newSrc;
+      if (img150) img150.src = newSrc;
+      if (img300) img300.src = newSrc;
+  }
+
+  var activateImageSelector = () => {
+    imageInput.click()
+  }
+
+  startValues()
+</script>
+{% endblock %}

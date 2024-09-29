@@ -1,0 +1,55 @@
+{% extends "adminBase.html" %} 
+{% load static %}
+{% block title %} Admin Panel | Challenge Store {% endblock %} 
+{% block adminPageTitle %} DASHBOARD {% endblock %} 
+{% block content %}
+
+<div class="container">
+  <div class="col4 colL3 colM6 colS3 statisticsBox">
+    <h5>Nº Products</h5>
+    <h1 class="title">{{ nProds }}</h1>
+  </div>
+  <div class="col4 colL3 colM3 colS3 statisticsBox">
+    <h5>Nº Products Without Stock</h5>
+    <h1 class="title">{{ nProdsNoStock }}</h1>
+  </div>
+  <div class="col4 colL2 colM3 colS3 statisticsBox">
+    <h5>Nº Categories</h5>
+    <h1 class="title">{{ nCats }}</h1>
+  </div>
+  <div class="col6 colL4 colM6 colS3 graphs" id="chart1Container"></div>
+  <div class="col6 colL4 colM6 colS3 graphs" id="chart2Container"></div>
+</div>
+prodsByRating
+
+<script>
+  window.onload = function () {
+      var chart1 = new CanvasJS.Chart("chart1Container", {
+          animationEnabled: true,
+          title:{
+              text: "Products in Categories"
+          },
+          data: [{
+              type: "column",
+              dataPoints: {{ prodsInCats | safe }}
+          }]
+      });
+      chart1.render();
+
+      var chart2 = new CanvasJS.Chart("chart2Container", {
+          theme: "light2",
+          animationEnabled: true,
+          title:{
+              text: "Products by Rating"
+          },
+          data: [{
+              type: "pie",
+              startAngle: -90,
+              yValueFormatString: "#,###'%'",
+              dataPoints: {{ prodsByRating | safe }}
+          }]
+      });
+      chart2.render();
+  }
+</script>
+{% endblock %}

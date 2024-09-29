@@ -1,0 +1,17 @@
+{% extends "adminBase.html" %} 
+{% block title %} New Product | Challenge Store {% endblock %} 
+{% block adminPageTitle %} CREATE - CATEGORY {% endblock %} 
+{% block content %}
+<form  action="{% url 'adminCategoryCreate' %}" method="post">
+  <div class="container">
+      {% csrf_token %}
+      {% include "./includes/_categoriesForm.html" %}
+      <div class="col12 colL8 colM6 colS3">
+        <button>
+          Create
+        </button>
+      </div>
+  </div>
+</form>
+
+{% endblock %}

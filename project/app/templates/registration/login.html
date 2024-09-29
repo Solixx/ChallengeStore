@@ -1,0 +1,12 @@
+{% extends "base.html" %} {% block title %} Challenge Store {% endblock %} 
+{% block content %}
+<div class="container" style="margin-top: 150px">
+    <h2 class="col12 colL8 colM6 colS3">Login</h2>
+    <form method="post" class="col12 colL8 colM6 colS3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="width100" type="submit">Login</button>
+    </form>
+</div>
+
+{% endblock %}
