@@ -288,7 +288,7 @@ def adminCategoryCreate(request):
         category.name = request.POST["name"]
         category.save()
 
-        return render(request, "adminCategoryProfile.html", { "category": category, "products": products })
+        return render(request, "adminCategoryProfile.html", { "category": category })
     
     categories = Categories.objects.all()
     return render(request, "adminCategories.html", { "categories": categories })
