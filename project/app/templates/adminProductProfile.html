@@ -45,8 +45,11 @@
     <div class="col4 colL3 colM2 colS3 previewInfo">
       <div class="stincky">
         <div class="previewInfoText">
-          <h3 id="productName"></h3>
-          <h4 id="productPrice"></h4>
+          <h5 id="productRating"></h5>
+          <div class="flexPreviewInfo">
+            <h3 id="productName"></h3>
+            <h4 id="productPrice"></h4>
+          </div>
         </div>
 
         {% if product.is_deleted %}
@@ -146,6 +149,7 @@
     productJS.name = "{{ product.name }}";
     productJS.price = {{ product.price }};
     productJS.stock = {{ product.stock }};
+    productJS.rating = {{ product.rating }}
     productJS.image_name = "{{ product.image.name }}";
     productJS.image_url = "{{ product.image.url }}";
     productJS.category_id = {{ product.category_id }};
@@ -157,6 +161,7 @@
   var insertHtmlContent = () => {
     document.getElementById('productName').innerHTML = productJS.name;
     document.getElementById('productPrice').innerHTML = '$' + productJS.price;
+    document.getElementById('productRating').innerHTML = 'Rating: ' + productJS.rating;
     // document.getElementById('productStock').innerHTML = productJS.stock;
     document.getElementById('displayImage').src = productJS.image_url;
   }

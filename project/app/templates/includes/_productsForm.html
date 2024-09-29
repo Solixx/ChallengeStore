@@ -1,9 +1,9 @@
 {% load static %}
-<div class="col5 colL3 colM2 colS3">
+<div class="col4 colL3 colM4 colS3">
     <label for="name">Name</label>
     <input type="text" id="name" name="name" required value="{{ product.name }}" placeholder="{% if product.name %}{{ product.name }}{% else %}Name{%endif%}">
   </div>
-  <div class="col2 colL2 colM1 colS2">
+  <div class="col2 colL1 colM1 colS2">
     <label for="price">Price</label>
     <input type="number" id="price" name="price" required value="{{ product.price }}" placeholder="{% if product.price %}{{ product.price }}{% else %}0.0${%endif%}">
   </div>
@@ -11,7 +11,7 @@
     <label for="stock">Stock</label>
     <input type="number" id="stock" name="stock" required value="{{ product.stock }}" placeholder="{% if product.stock  %}{{ product.stock }}{% else %}0{%endif%}">
   </div>
-  <div class="col3 colL2 colM2 colS3 categoriesSelect">
+  <div class="col3 colL2 colM4 colS3 categoriesSelect">
     <label for="category">Category</label>
     <select id="category" name="category" required value="product.category_id">
       {% for category in categories %}
@@ -19,14 +19,24 @@
       {% endfor %}
     </select>
   </div>
-  <div class="col9 colL6 colM4 colS3">
+  <div class="col1 colL1 colM2 colS3 categoriesSelect">
+    <label for="rating">Rating</label>
+    <select id="rating" name="rating" required value="{{ product.rating }}">
+      <option value="1" {% if 1 == product.rating %}selected{% endif %}>1</option>
+      <option value="2" {% if 2 == product.rating %}selected{% endif %}>2</option>
+      <option value="3" {% if 3 == product.rating %}selected{% endif %}>3</option>
+      <option value="4" {% if 4 == product.rating %}selected{% endif %}>4</option>
+      <option value="5" {% if 5 == product.rating %}selected{% endif %}>5</option>
+    </select>
+  </div>
+  <div class="marginTopTabletPhone25 col9 colL6 colM4 colS3">
     <div class="displayImages">
       <img id="img-preview-300" src="{% if product.image %}{{ product.image.url }} {% else %} {% static '/public/noImage.jpg' %} {% endif %}" alt="Current Image">
       <img id="img-preview-150" src="{% if product.image %}{{ product.image.url }} {% else %} {% static '/public/noImage.jpg' %} {% endif %}" alt="Current Image">
       <img id="img-preview-50" src="{% if product.image %}{{ product.image.url }} {% else %} {% static '/public/noImage.jpg' %} {% endif %}" alt="Current Image">
     </div>
   </div>
-  <div class="changeImageBtn col3 colL2 colM2 colS3">
+  <div class="marginTopTabletPhone25 changeImageBtn col3 colL2 colM2 colS3">
     <input type="file" id="image" name="image" required style="display: none;">
     <div class="fakeBtn darkBtn" onClick="activateImageSelector()"><p>Change Image</p></div>
   </div>

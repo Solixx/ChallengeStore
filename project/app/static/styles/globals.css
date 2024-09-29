@@ -270,6 +270,10 @@ p{
   color: #EFECE6;
 }
 
+.marginTopTabletPhone25{
+  margin-top: 25px;
+}
+
 @media (min-width: 768px){
   .bigTitle{
       font-size: var(--font-size-bigTitle);
@@ -279,5 +283,11 @@ p{
 
   button, .fakeBtn{
     padding: 15px 50px;
+  }
+}
+
+@media (min-width: 1024px){
+  .marginTopTabletPhone25{
+    margin-top: 0;
   }
 }

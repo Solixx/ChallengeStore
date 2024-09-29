@@ -117,6 +117,7 @@ def crtAdminProductEdit(request, id):
         name = request.POST.get("name")
         price = request.POST.get("price")
         stock = request.POST.get("stock")
+        rating = request.POST.get("rating")
         category_id = request.POST.get("category")
 
         if name:
@@ -135,6 +136,16 @@ def crtAdminProductEdit(request, id):
                 product.stock = stock
             except ValueError:
                 return HttpResponse("Stock must be a valid integer", status=400)
+            
+        if rating:
+            try:
+                rating = int(rating)
+                if rating >= 0 and rating <= 5:
+                    product.rating = rating
+                else:
+                    return HttpResponse("Rating must be between 0 and 5", status=400)
+            except ValueError:
+                return HttpResponse("Rating must be a valid float", status=400)
 
         if category_id:
             try:
@@ -156,6 +167,7 @@ def crtAdminProductEdit(request, id):
             'name': product.name,
             'price': str(product.price),
             'stock': product.stock,
+            'rating': product.rating,
             'image_name': product.image.name if product.image else None,
             'image_url': product.image.url if product.image else None,
             'category_id': product.category.id if product.category else None,
@@ -193,6 +205,7 @@ def crtAdminProductCreate(request):
         product.name = request.POST["name"]
         product.price = request.POST["price"]
         product.stock = request.POST["stock"]
+        product.rating = request.POST["rating"]
 
         if request.FILES.get('image'):
             product.image = request.FILES['image']
