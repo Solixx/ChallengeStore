@@ -114,12 +114,6 @@ button, .fakeBtn{
   padding: 5px 15px;
 }
 
-@media (min-width: 768px) {
-  button, .fakeBtn{
-    padding: 15px 50px;
-  }
-}
-
 .fakeBtn{
   background: #0C0D0E;
 }
@@ -160,13 +154,7 @@ a {
   text-decoration: none;
 }
 
-@media (min-width: 768px){
-  .bigTitle{
-      font-size: var(--font-size-bigTitle);
-      font-weight: bold;
-      color: var(--color-secondaryText);
-  }
-}
+
 
 
 .title{
@@ -243,4 +231,53 @@ p{
 
 .whiteP{
   color: #EFECE6;
+}
+
+
+/* PAGINATION */
+
+.pagination{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-block: 50px;
+}
+
+.pagination a{
+  min-width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #EFECE6;
+  border-radius: 10px;
+}
+
+.pagination a *{
+  color: #0C0D0E;
+  font-weight: bold !important;
+  padding-inline: 15px;
+}
+
+.pagination .active{
+  background: #0C0D0E;
+}
+
+.pagination .active *{
+  color: #EFECE6;
+}
+
+@media (min-width: 768px){
+  .bigTitle{
+      font-size: var(--font-size-bigTitle);
+      font-weight: bold;
+      color: var(--color-secondaryText);
+  }
+
+  button, .fakeBtn{
+    padding: 15px 50px;
+  }
 }

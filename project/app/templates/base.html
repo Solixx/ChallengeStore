@@ -50,7 +50,7 @@
                 <hr />
             </a>
           </div>
-          {% if user.is_authenticated %}
+          {% if user.is_authenticated and user.is_staff %}
             <div class="menuOpt">
               <a href="/adminPanel">
                   <h4>ADMIN PANEL</h4>

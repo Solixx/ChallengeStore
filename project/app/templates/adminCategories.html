@@ -2,13 +2,10 @@
 {% block title %} Admin Panel | Challenge Store {% endblock %} 
 {% block adminPageTitle %} LIST - CATEGORIES {% endblock %} 
 {% block content %}
+
+  {% include "./includes/_searchForm.html" with urlForm="adminListCategories" canHaveMultySearches="False" canHaveCategories="False" %}
+  
   <div class="container">
-    <div class="col12 colL8 colM6 colS3">
-      <form id="searchForm" action="{% url 'adminListCategories' %}" method="POST">
-        {% csrf_token %}
-        <input type="search" name="search" placeholder="Search Categories" value="{{ search }}" onBlur="forceSearchSubmit()" />
-      </form>
-    </div>
     {% for category in categories %}
       <ul class="adminCategoriesName col10 colL6 colM4 colS3">
         <a href="{% url 'adminCategoryProfile' category.id %}">
@@ -33,9 +30,10 @@
       <div class="adminCategoriesHr col12 colL8 colM6 colS3">
         <hr>
       </div>
-    {% endfor %}
-    
+  {% endfor %}
   </div>
+
+  {% include "./includes/_pagination.html" with page_obj=categories %}
 
   <script>
 

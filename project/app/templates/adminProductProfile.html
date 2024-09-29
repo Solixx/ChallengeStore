@@ -121,7 +121,7 @@
     var form = document.getElementById("updateForm");
     var formData = new FormData(form);
     
-    fetch('http://127.0.0.1:8000/adminPanel/products/edit/'+id+'/', {
+    fetch('http://127.0.0.1:8000/adminPanel/product/edit/'+id+'/', {
       method: 'POST',
       body: formData
     })
@@ -139,7 +139,7 @@
     var form = document.getElementById("disableForm");
     var formData = new FormData(form);
 
-    fetch('http://127.0.0.1:8000/adminPanel/products/delete/'+id+'/', {
+    fetch('http://127.0.0.1:8000/adminPanel/product/delete/'+id+'/', {
       method: 'POST',
       body: formData
     })
@@ -157,7 +157,7 @@
     var form = document.getElementById("restoreForm");
     var formData = new FormData(form);
 
-    fetch('http://127.0.0.1:8000/adminPanel/products/restore/'+id+'/', {
+    fetch('http://127.0.0.1:8000/adminPanel/product/restore/'+id+'/', {
       method: 'POST',
       body: formData
     })

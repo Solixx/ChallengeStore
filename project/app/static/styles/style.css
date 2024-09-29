@@ -263,18 +263,6 @@ footer .footerLine hr{
 }
 
 
-/* AdminPanel */
-
-.adminPanel{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    min-height: 100svh;
-    padding: 120px 0;
-}
-
-
 @media (min-width: 768px) {
     .heroSection .waves{
         display: block;
@@ -297,7 +285,7 @@ footer .footerLine hr{
         display: block;
     }
 
-    .footerFrase{
+    .footerTop .footerFrase{
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -306,7 +294,6 @@ footer .footerLine hr{
     }
 
     .footerMidLeft{
-        display: none;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;

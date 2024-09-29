@@ -140,6 +140,7 @@ nav ul li:last-child {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  overflow: hidden;
 }
 
 nav ul li:last-child a{

@@ -5,6 +5,8 @@ from django.core import serializers
 from django.contrib import messages
 from .forms import UserRegisterForm
 from django.contrib.auth.decorators import login_required
+from app.decorators import staff_required
+from django.core.paginator import Paginator
 
 def searchProductsForm(request, haveCategory):
     products = Products.objects.all().order_by('-created_at')
@@ -22,7 +24,7 @@ def searchProductsForm(request, haveCategory):
         if search:
             products = Products.objects.filter(name__icontains = search).order_by('-created_at')
 
-        if price and price != "-1":
+        if price:
             if price == "0":
                 products = products.filter(price = 0).order_by('-created_at')
             elif price == "100":
@@ -33,8 +35,10 @@ def searchProductsForm(request, haveCategory):
                 products = products.filter(price__lt = 500).filter(price__gt = 250).order_by('-created_at')
             elif price == "500+":
                 products = products.filter(price__gte = 500).order_by('-created_at')
+            elif price == "-1":
+                price = ""
 
-        if stock and stock != "-1":
+        if stock:
             if stock == "0":
                 products = products.filter(stock = 0).order_by('-created_at')
             elif stock == "25":
@@ -45,6 +49,8 @@ def searchProductsForm(request, haveCategory):
                 products = products.filter(stock__lt = 100).filter(stock__gt = 50).order_by('-created_at')
             elif stock == "100+":
                 products = products.filter(stock__gte = 100).order_by('-created_at')
+            elif stock == "-1":
+                stock = ""
 
         if haveCategory[0] and category and Categories.objects.filter(id=int(category)).exists():
                 products = products.filter(category_id = category).order_by('-created_at')
@@ -61,6 +67,7 @@ def searchProductsForm(request, haveCategory):
             "search": search,
             "price": price,
             "stock": stock,
+            "category": 0
         }
         products = products.filter(category_id = haveCategory[1])
 
@@ -70,7 +77,10 @@ def searchProductsForm(request, haveCategory):
 def home(request):
     return render(request, "home.html")
 
+""" Admin Panel """
+
 @login_required
+@staff_required
 def adminPanel(request):
     nProds = Products.objects.count()
     nProdsNoStock = Products.objects.filter(stock = 0).count()
@@ -81,15 +91,38 @@ def adminPanel(request):
 """ PRODUCTS """
 
 @login_required
+@staff_required
 def adminListProducts(request):
     categories = Categories.objects.all()
+
+    searchObj = {
+        "search": "",
+        "price": "",
+        "stock": "",
+        "category": 0
+    }
     
     searchObj = searchProductsForm(request, [True, "0"])['searchObj']
     products = searchProductsForm(request, [True, "0"])['products']
 
+    paginator = Paginator(products, 3)
+
+    if searchObj["search"] == "" and searchObj["price"] == "" and searchObj["stock"] == "" and searchObj["category"] == 0:
+        if request.method == "GET":
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+
+            return render(request, "adminProducts.html", { "products": page_obj, "categories": categories, "searchObj": searchObj })
+        else:
+            page_number = 1
+            page_obj = paginator.get_page(page_number)
+
+            return render(request, "adminProducts.html", { "products": page_obj, "categories": categories, "searchObj": searchObj })
+
     return render(request, "adminProducts.html", { "products": products, "categories": categories, "searchObj": searchObj })
 
 @login_required
+@staff_required
 def adminProductProfile(request, id):
     product = get_object_or_404(Products, id=id)
     categories = Categories.objects.all()
@@ -97,6 +130,7 @@ def adminProductProfile(request, id):
     return render(request, "adminProductProfile.html", { "product": product, "categories": categories })
 
 @login_required
+@staff_required
 def adminProductEdit(request, id):
     product = get_object_or_404(Products, id=id)
     categories = Categories.objects.all()
@@ -157,6 +191,7 @@ def adminProductEdit(request, id):
     return JsonResponse({"error": "Invalid request method"}, status=405)
 
 @login_required
+@staff_required
 def adminProductDelete(request, id):
     product = get_object_or_404(Products, id=id)
     product.delete()
@@ -165,6 +200,7 @@ def adminProductDelete(request, id):
     return HttpResponseRedirect(previous_page)
 
 @login_required
+@staff_required
 def adminProductRestore(request, id):
     product = get_object_or_404(Products, id=id)
     product.restore()
@@ -173,11 +209,13 @@ def adminProductRestore(request, id):
     return HttpResponseRedirect(previous_page)
 
 @login_required
+@staff_required
 def adminPageProductNew(request):
     categories = Categories.objects.all()
     return render(request, "adminProductNew.html", { "categories": categories })
 
 @login_required
+@staff_required
 def adminProductCreate(request):
     categories = Categories.objects.all()
     if request.method == "POST":
@@ -206,6 +244,7 @@ def adminProductCreate(request):
 
 """ CATEGORIES """
 
+@staff_required
 @login_required
 def adminListCategories(request):
     search = ""
@@ -220,12 +259,28 @@ def adminListCategories(request):
     else:
         categories = Categories.objects.all().order_by('-created_at')
 
+    paginator = Paginator(categories, 3)
+
+    if search == "":
+        if request.method == "GET":
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+
+            return render(request, "adminCategories.html", { "categories": page_obj, "search": search })
+        else:
+            page_number = 1
+            page_obj = paginator.get_page(page_number)
+
+            return render(request, "adminCategories.html", { "categories": page_obj, "search": search })
+        
     return render(request, "adminCategories.html", { "categories": categories, "search": search })
 
+@staff_required
 @login_required
 def adminPageCategoriesNew(request):
     return render(request, "adminCategoryNew.html")
 
+@staff_required
 @login_required
 def adminCategoryCreate(request):
     if request.method == "POST":
@@ -238,16 +293,39 @@ def adminCategoryCreate(request):
     categories = Categories.objects.all()
     return render(request, "adminCategories.html", { "categories": categories })
 
+@staff_required
 @login_required
 def adminCategoryProfile(request, id):
     category = get_object_or_404(Categories, id=id)
     categories = Categories.objects.all()
 
+    searchObj = {
+        "search": "",
+        "price": "",
+        "stock": "",
+        "category": 0
+    }
+
     searchObj = searchProductsForm(request, [False, id])['searchObj']
     products = searchProductsForm(request, [False, id])['products']  
-    
+
+    paginator = Paginator(products, 3)
+
+    if searchObj["search"] == "" and searchObj["price"] == "" and searchObj["stock"] == "" and searchObj["category"] == 0:
+        if request.method == "GET":
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+
+            return render(request, "adminCategoryProfile.html", { "category": category, "products": page_obj, "categories": categories, "searchObj": searchObj })
+        else:
+            page_number = 1
+            page_obj = paginator.get_page(page_number)
+
+            return render(request, "adminCategoryProfile.html", { "category": category, "products": page_obj, "categories": categories, "searchObj": searchObj })
+
     return render(request, "adminCategoryProfile.html", { "category": category, "products": products, "categories": categories, "searchObj": searchObj })
 
+@staff_required
 @login_required
 def adminCategoryEdit(request, id):
     category = get_object_or_404(Categories, id=id)
@@ -269,6 +347,7 @@ def adminCategoryEdit(request, id):
     
     return JsonResponse({"error": "Invalid request method"}, status=405)
 
+@staff_required
 @login_required
 def adminCategoryDelete(request, id):
     category = get_object_or_404(Categories, id=id)
@@ -277,6 +356,7 @@ def adminCategoryDelete(request, id):
     previous_page = request.META.get('HTTP_REFERER', '/')
     return HttpResponseRedirect(previous_page)
 
+@staff_required
 @login_required
 def adminCategoryRestore(request, id):
     category = get_object_or_404(Categories, id=id)
